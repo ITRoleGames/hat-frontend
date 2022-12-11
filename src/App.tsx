@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import CreateGame from "components/create-game/сreate-game-page.component";
+import CreateWordsPage from "components/create-words-page/create-words-page.component";
+import GameCreatedPage from "components/game-created/game-created-page.component";
+import HomePage from "components/home-page.component";
+import JoinGamePage from "components/join-game/join-game-page.component";
+import { PageNotFound } from "components/page-not-found.component";
+import PrivateRoute from "components/private-route";
+import React from "react";
+import { Routes } from "react-router";
+import { BrowserRouter, Route } from "react-router-dom";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={ <HomePage/> }/>
+                <Route path="/createGame" element={ <CreateGame/> }/>
+                <Route path="/joinGame" element={ <JoinGamePage/> }/>
+                <Route path="/gameCreated" element={ <PrivateRoute component={ GameCreatedPage }/> }/>
+                <Route path="/createWords" element={ <PrivateRoute component={ CreateWordsPage }/> }/>
+                <Route path="*" element={ <PageNotFound/> }>
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
