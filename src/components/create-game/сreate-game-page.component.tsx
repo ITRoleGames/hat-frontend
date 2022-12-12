@@ -24,7 +24,7 @@ const CreateGamePage: React.FC<CreateGameProps> = ({
                 const data: CreateGameData = {
                     creatorId: user.id,
                     wordsPerParticipant: formData.wordsPerParticipant,
-                    moveTime: formData.moveTime,
+                    moveTimeInSec: formData.moveTime,
                 };
                 createGame(data).then(() => navigate("/gameCreated"));
             },

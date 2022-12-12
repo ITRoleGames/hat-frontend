@@ -4,5 +4,5 @@ export interface CreateGameData {
 
     wordsPerParticipant: number;
 
-    moveTime: number;
+    moveTimeInSec: number;
 }
