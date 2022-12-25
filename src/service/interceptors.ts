@@ -5,7 +5,7 @@ import { isUserLoggedIn } from "service/local-storage";
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
     if (isUserLoggedIn()) {
         const accessToken = getAccessToken();
-        config.headers!!["Authorization"] = `Bearer ${ accessToken }`;
+        config.headers!!['Authorization'] = `Bearer ${ accessToken }`;
         return config;
     }
     console.info(`[request] [${ JSON.stringify(config) }]`);

@@ -1,4 +1,4 @@
-const TOKEN_LOCAL_STORAGE_ATTRIBUTE_NAME: string = "userToken";
+const TOKEN_LOCAL_STORAGE_ATTRIBUTE_NAME = "userToken";
 
 export function isUserLoggedIn(): boolean {
 
