@@ -3,7 +3,7 @@ import CreateWordsPage from "components/create-words-page/create-words-page.comp
 import GameCreatedPage from "components/game-created/game-created-page.component";
 import HomePage from "components/home-page.component";
 import JoinGamePage from "components/join-game/join-game-page.component";
-import { PageNotFound } from "components/page-not-found.component";
+import PageNotFound from "components/page-not-found.component";
 import PrivateRoute from "components/private-route";
 import React from "react";
 import { Routes } from "react-router";

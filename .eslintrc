@@ -10,11 +10,23 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "indent": ["error", 4,  { "SwitchCase": 1 }],
+//    "indent": [
+//      "warn",
+//      4,
+//      {
+//        "SwitchCase": 1,
+//        "MemberExpression": 0,
+//        "CallExpression": {
+//          "arguments": "off"
+//        }
+//      }
+//    ],
     "no-console": 1,
     "@typescript-eslint/ban-ts-comment": [
       "error",
-      {"ts-ignore": "allow-with-description"}
+      {
+        "ts-ignore": "allow-with-description"
+      }
     ],
     "@typescript-eslint/no-extra-non-null-assertion": 1,
     "@typescript-eslint/ban-types": [
@@ -26,6 +38,12 @@
         }
       }
     ],
-    "quotes": [2, "double", { "avoidEscape": true }]
+    "quotes": [
+      2,
+      "double",
+      {
+        "avoidEscape": true
+      }
+    ]
   }
 }

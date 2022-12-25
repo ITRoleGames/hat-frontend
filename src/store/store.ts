@@ -7,8 +7,7 @@ import thunk from "redux-thunk";
 export const store = configureStore({
     reducer: reducers,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware()
-            .prepend(
-                thunk,
-            ),
+        getDefaultMiddleware().prepend(
+            thunk,
+        ),
 });

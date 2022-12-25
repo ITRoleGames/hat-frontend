@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "reducers/combine";
 
-const Header: React.FC<HeaderProps> = ({
-                                           userState,
-                                       }) => {
+const Header: React.FC<HeaderProps> = ({ userState }) => {
 
     const userName = userState.user?.name ? userState.user?.name : "Неизвестный енот";
 
@@ -17,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({
                     <Link to="/" className="navbar-brand"> Шапка </Link>
                 </div>
                 <div className="p-2 flex-fill bd-highlight"></div>
-                <div className="p-2 flex-fill bd-highlight text-end">Привет, {userName}</div>
+                <div className="p-2 flex-fill bd-highlight text-end">Привет, { userName }</div>
             </div>
 
 
@@ -26,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-    userState: state.user
+    userState: state.user,
 });
 
 type HeaderProps = ConnectedProps<typeof connector>;

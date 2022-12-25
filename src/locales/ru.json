@@ -1,0 +1,27 @@
+{
+  "common": {
+    "btn.create": "Создать",
+    "btn.join": "Присоединиться",
+    "btn.next": "Далее",
+    "btn.share": "Поделиться",
+    "createGame.form.error.maxPlayers": "Максимально может быть {{max}} игроков",
+    "createGame.form.error.maxTime": "Максимальное время {{max}} сек",
+    "createGame.form.moveTime.label": "Время на ход",
+    "createGame.form.worldPerPlayer.label": "Слов от участника",
+    "createGame.settings": "Настройки",
+    "createGame.title": "Создать игру",
+    "createWords.title": "Придумайте слова",
+    "error.requiredField": "Обязательное поле",
+    "gameCreated.code": "Код для подключения",
+    "gameCreated.title": "Игра создана",
+    "hat": "Шапка",
+    "header.hello": "Привет",
+    "homePage.btn.joinGame": "Войти в игру",
+    "homePage.btn.newGame": "Новая игра",
+    "joinGame.enterCode": "Присоединиться к игре",
+    "joinGame.form.code": "Код игры",
+    "joinGame.title": "Присоединиться к игре",
+    "pageNotFound.btn.home": "На главную",
+    "pageNotFound.warning": "Страница не найдена"
+  }
+}

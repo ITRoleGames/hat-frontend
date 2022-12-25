@@ -8,6 +8,7 @@ import { store } from "store/store";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import "./i18n.ts";
 
 setupInterceptorsTo(axios);
 

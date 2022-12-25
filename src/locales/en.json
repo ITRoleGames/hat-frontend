@@ -1,0 +1,27 @@
+{
+  "common": {
+    "btn.create": "Create",
+    "btn.join": "Join",
+    "btn.next": "Next",
+    "btn.share": "Share",
+    "createGame.form.error.maxPlayers": "Maximum number of players is {{max}}",
+    "createGame.form.error.maxTime": "Max time is  {{max}} sec",
+    "createGame.form.moveTime.label": "Move time",
+    "createGame.form.worldPerPlayer.label": "Words per player",
+    "createGame.settings": "Setting",
+    "createGame.title": "Create game",
+    "createWords.title": "Create words",
+    "error.requiredField": "Required field",
+    "gameCreated.code": "Security code",
+    "gameCreated.title": "Game is created",
+    "hat": "The Hat",
+    "header.hello": "Hi",
+    "homePage.btn.joinGame": "Join game",
+    "homePage.btn.newGame": "New game",
+    "joinGame.enterCode": "Join game",
+    "joinGame.form.code": "Game code",
+    "joinGame.title": "Join game",
+    "pageNotFound.btn.home": "Go home",
+    "pageNotFound.warning": "Page not found"
+  }
+}
