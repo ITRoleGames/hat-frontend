@@ -10,6 +10,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "indent": ["error", 4,  { "SwitchCase": 1 }],
     "no-console": 1,
     "@typescript-eslint/ban-ts-comment": [
       "error",
@@ -24,6 +25,7 @@
           "{}": false
         }
       }
-    ]
+    ],
+    "quotes": [2, "double", { "avoidEscape": true }]
   }
 }
