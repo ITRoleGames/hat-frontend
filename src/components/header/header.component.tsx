@@ -1,3 +1,7 @@
+import { Nav } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { ConnectedProps } from "react-redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -5,21 +9,25 @@ import { RootState } from "reducers/combine";
 
 const Header: React.FC<HeaderProps> = ({ userState }) => {
 
-    const userName = userState.user?.name ? userState.user?.name : "Неизвестный енот";
+    const { t } = useTranslation();
+    const userName = userState.user?.name ? userState.user?.name : t("header.unknownRacoon");
 
     return (
-        <div className="col-lg-6 p-3 bg-light mx-auto">
-
-            <div className="d-flex bd-highlight">
-                <div className="py-2 flex-fill bd-highlight text-start">
-                    <Link to="/" className="navbar-brand"> Шапка </Link>
-                </div>
-                <div className="p-2 flex-fill bd-highlight"></div>
-                <div className="p-2 flex-fill bd-highlight text-end">Привет, { userName }</div>
-            </div>
-
-
-        </div>
+        <Navbar bg="light" expand="lg">
+            <Container>
+                <Link className="navbar-brand" to={ "/" }>{ t("hat") }</Link>
+                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                    </Nav>
+                    <Nav>
+                        <div>
+                            { t("header.hello") }, {userName}
+                        </div>
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 };
 

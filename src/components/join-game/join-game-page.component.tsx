@@ -1,5 +1,6 @@
 import { joinGameAction } from "actions/game.action";
 import { createUserAction } from "actions/user.action";
+import Header from "components/header/header.component";
 import { JoinGameFormData } from "components/join-game/join-game-form-data";
 import JoinGameForm from "components/join-game/join-game-form.component";
 import { User } from "model/user.model";
@@ -22,11 +23,13 @@ const JoinGamePage: React.FC<JoinGameProps> = ({ createUser, joinGame }) => {
     };
 
     return (
-        <div className="px-4 py-5 my-5 text-center">
-            <h1 className="display-1 fw-bold">{t("joinGame.title")}</h1>
-            <h2 className="display-5 fw-bold">{t("joinGame.enterCode")}</h2>
-            <JoinGameForm onFormSubmit={ handleFormSubmission } loading={ loading }/>
-        </div>
+        <>
+            <Header/>
+            <div className="px-4 py-5 my-5 text-center">
+                <h1 className="display-3 fw-bold">{ t("joinGame.title") }</h1>
+                <JoinGameForm onFormSubmit={ handleFormSubmission } loading={ loading }/>
+            </div>
+        </>
     );
 };
 

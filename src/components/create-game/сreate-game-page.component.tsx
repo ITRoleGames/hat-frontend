@@ -1,6 +1,7 @@
 import { createGameAction } from "actions/game.action";
 import { createUserAction } from "actions/user.action";
 import CreateGameForm from "components/create-game/create-game-form.component";
+import Header from "components/header/header.component";
 import { CreateGameData } from "model/create-game-data.model";
 import { User } from "model/user.model";
 import { useTranslation } from "react-i18next";
@@ -29,11 +30,14 @@ const CreateGamePage: React.FC<CreateGameProps> = ({ userState, gameState, creat
     };
 
     return (
-        <div className="px-4 py-5 my-5 text-center">
-            <h1 className="display-1 fw-bold">{t("createGame.title")}</h1>
-            <h2 className="display-5 fw-bold">{t("createGame.settings")}</h2>
-            <CreateGameForm onFormSubmit={ handleFormSubmission } loading={ loading }/>
-        </div>
+        <>
+            <Header/>
+            <div className="px-4 py-5 my-5 text-center">
+                <h1 className="display-3 fw-bold">{ t("createGame.title") }</h1>
+                <h2 className="display-6 fw-bold">{ t("createGame.settings") }</h2>
+                <CreateGameForm onFormSubmit={ handleFormSubmission } loading={ loading }/>
+            </div>
+        </>
     );
 };
 
