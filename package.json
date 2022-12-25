@@ -2,7 +2,7 @@
   "name": "hat-frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://0.0.0.0:8000",
+  "proxy": "http://0.0.0.0:9002",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",
@@ -19,6 +19,7 @@
     "@types/redux-thunk": "^2.1.0",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
+    "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
@@ -33,7 +34,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env PORT=8999 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
