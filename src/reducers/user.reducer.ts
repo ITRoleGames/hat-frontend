@@ -1,6 +1,6 @@
 import { User } from "model/user.model";
-import { UserActionType } from "../actions/user.action";
-import { UserAction } from "../actions/user.action";
+import { UserActionType } from "actions/user.action";
+import { UserAction } from "actions/user.action";
 
 
 interface UserState {
@@ -32,7 +32,7 @@ const userReducer = (state: UserState = initialState, action: UserAction): UserS
                 user: action.payload,
                 error: null,
             };
-        case UserActionType.CREATE_USER_FAIL:
+        case UserActionType.CREATE_USER_FAILED:
             return {
                 loading: false,
                 user: null,
@@ -49,6 +49,12 @@ const userReducer = (state: UserState = initialState, action: UserAction): UserS
                 loading: false,
                 user: action.payload,
                 error: null,
+            };
+        case UserActionType.GET_CURRENT_USER_FAILED:
+            return {
+                loading: false,
+                user: null,
+                error: action.error,
             };
         default:
             return state;

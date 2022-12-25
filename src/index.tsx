@@ -2,6 +2,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { ReactNotifications } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css"
 import { Provider } from "react-redux";
 import { setupInterceptorsTo } from "service/interceptors";
 import { store } from "store/store";
@@ -18,6 +20,7 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <Provider store={ store }>
+            <ReactNotifications />
             <App/>
         </Provider>
     </React.StrictMode>,

@@ -26,6 +26,17 @@ const gameReducer = (state: GameState = initialState, action: GameAction): GameS
                 game: action.payload,
                 error: null,
             };
+        case GameActionType.CREATE_GAME_PENDING:
+            return {
+                ...state,
+                loading: true
+            };
+        case GameActionType.CREATE_GAME_FAILED:
+            return {
+                loading: false,
+                game: null,
+                error: action.error,
+            };
         default:
             return state;
     }

@@ -1,4 +1,5 @@
 import { UserApi } from "api/user.api";
+import { AxiosError } from "axios";
 import { User } from "model/user.model";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
@@ -8,9 +9,10 @@ import { registerAccessToken } from "service/local-storage";
 export enum UserActionType {
     GET_CURRENT_USER_PENDING = "GET_CURRENT_USER_PENDING",
     GET_CURRENT_USER_SUCCESS = "GET_CURRENT_USER_SUCCESS",
+    GET_CURRENT_USER_FAILED = "GET_CURRENT_USER_FAILED",
     CREATE_USER_PENDING = "CREATE_USER_PENDING",
     CREATE_USER_SUCCESS = "CREATE_USER_SUCCESS",
-    CREATE_USER_FAIL = "CREATE_USER_FAIL",
+    CREATE_USER_FAILED = "CREATE_USER_FAILED",
 }
 
 interface CreateUserActionPending {
@@ -23,8 +25,8 @@ interface CreateUserActionSuccess {
     payload: User;
 }
 
-interface CreateUserActionFail {
-    type: UserActionType.CREATE_USER_FAIL;
+interface CreateUserActionFailed {
+    type: UserActionType.CREATE_USER_FAILED;
 
     payload: string;
 }
@@ -39,12 +41,19 @@ interface GetCurrentUserActionSuccess {
     payload: User;
 }
 
+interface GetCurrentUserActionFailed {
+    type: UserActionType.GET_CURRENT_USER_FAILED;
+
+    error: string;
+}
+
 export type UserAction =
     CreateUserActionPending
     | CreateUserActionSuccess
-    | CreateUserActionFail
+    | CreateUserActionFailed
     | GetCurrentUserActionPending
-    | GetCurrentUserActionSuccess;
+    | GetCurrentUserActionSuccess
+    | GetCurrentUserActionFailed;
 
 export const createUserActionPending = (): CreateUserActionPending => {
     return { type: UserActionType.CREATE_USER_PENDING };
@@ -54,8 +63,8 @@ export const createUserActionSuccess = (user: User): CreateUserActionSuccess => 
     return { type: UserActionType.CREATE_USER_SUCCESS, payload: user };
 };
 
-export const createUserActionFail = (error: string): CreateUserActionFail => {
-    return { type: UserActionType.CREATE_USER_FAIL, payload: error };
+export const createUserActionFailed = (error: string): CreateUserActionFailed => {
+    return { type: UserActionType.CREATE_USER_FAILED, payload: error };
 };
 
 export const getCurrentUserActionPending = (): GetCurrentUserActionPending => {
@@ -66,18 +75,20 @@ export const getCurrentUserActionSuccess = (user: User): GetCurrentUserActionSuc
     return { type: UserActionType.GET_CURRENT_USER_SUCCESS, payload: user };
 };
 
+export const getCurrentUserActionFailed = (error: string): GetCurrentUserActionFailed => {
+    return { type: UserActionType.GET_CURRENT_USER_FAILED, error: error };
+};
+
 export const createUserAction = (): ThunkAction<Promise<User>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<User> => {
         return new Promise<User>((resolve) => {
             dispatch(createUserActionPending());
-            console.log("Creating user...");
 
             return UserApi.createUser().then((user: User) => {
-                console.log(`User created ${ JSON.stringify(user) }`);
                 dispatch(createUserActionSuccess(user));
                 registerAccessToken(user.accessToken);
                 resolve(user);
-            });
+            }).catch((error: AxiosError) => dispatch(createUserActionFailed(error.message)));
         });
     };
 };
@@ -85,14 +96,12 @@ export const createUserAction = (): ThunkAction<Promise<User>, {}, {}, AnyAction
 export const getCurrentUserAction = (): ThunkAction<Promise<User>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<User> => {
         return new Promise<User>((resolve) => {
-            console.log("Getting current user...");
-            dispatch(getCurrentUserActionPending())
+            dispatch(getCurrentUserActionPending());
 
             return UserApi.getCurrentUser().then((user: User) => {
-                console.log(`Current user received ${ JSON.stringify(user) }`);
                 dispatch(getCurrentUserActionSuccess(user));
                 resolve(user);
-            });
+            }).catch((error: AxiosError) => dispatch(getCurrentUserActionFailed(error.message)));
         });
     };
 };
