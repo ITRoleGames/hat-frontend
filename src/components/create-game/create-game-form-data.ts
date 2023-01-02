@@ -1,6 +1,6 @@
 export interface FormData {
 
-    wordsPerParticipant: number;
+    wordsPerPlayer: number;
 
     moveTime: number;
 }

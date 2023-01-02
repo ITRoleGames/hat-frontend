@@ -10,13 +10,18 @@ type Props = {
 };
 
 function CreateGameForm({ onFormSubmit, loading }: Props) {
+    const minWordsPerPlayer = 1
+    const maxWordsPerPlayer = 10
+    const minMoveTime = 30
+    const maxMoveTime = 120
 
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: {errors},
     } = useForm<FormData>({
-        defaultValues: { wordsPerParticipant: 10, moveTime: 30 },
+        mode: "onBlur",
+        defaultValues: { wordsPerPlayer: 10, moveTime: 30 },
     });
 
     const { t } = useTranslation();
@@ -29,14 +34,24 @@ function CreateGameForm({ onFormSubmit, loading }: Props) {
                 <div className="input-group has-validation">
                     <input
                         type="number"
-                        className={ "form-control " + (errors?.wordsPerParticipant ? "is-invalid" : "") }
-                        { ... register("wordsPerParticipant", { required: true, max: 10 }) }
+                        className={ "form-control " + (errors?.wordsPerPlayer ? "is-invalid" : "") }
+                        {
+                            ... register(
+                                "wordsPerPlayer",
+                                { required: true, min: minWordsPerPlayer, max: maxWordsPerPlayer, valueAsNumber: true },
+                            )
+                        }
                     />
-                    { errors?.wordsPerParticipant?.type === "required" &&
+                    { errors?.wordsPerPlayer?.type === "required" &&
                         <div className="invalid-feedback"> { t("error.requiredField") }</div> }
-                    { errors?.wordsPerParticipant?.type === "max" &&
+                    { errors?.wordsPerPlayer?.type === "min" &&
                         <div className="invalid-feedback">
-                            { t("createGame.form.error.maxPlayers", { max: 10 }) }
+                            { t("createGame.form.error.minWordsPerPlayer", { min: minWordsPerPlayer }) }
+                        </div>
+                    }
+                    { errors?.wordsPerPlayer?.type === "max" &&
+                        <div className="invalid-feedback">
+                            { t("createGame.form.error.maxWordsPerPlayer", { max: maxWordsPerPlayer }) }
                         </div>
                     }
                 </div>
@@ -45,20 +60,28 @@ function CreateGameForm({ onFormSubmit, loading }: Props) {
                     <input
                         type="number"
                         className={ "form-control " + (errors?.moveTime ? "is-invalid" : "") }
-                        { ... register("moveTime", { required: true, max: 120 }) }
+                        { ... register(
+                            "moveTime",
+                            { required: true, min: minMoveTime, max: maxMoveTime, valueAsNumber: true },
+                        ) }
                     />
                     { errors?.moveTime?.type === "required" &&
                         <div className="invalid-feedback">{ t("error.requiredField") }</div> }
+                    { errors?.moveTime?.type === "min" &&
+                        <div className="invalid-feedback">
+                            { t("createGame.form.error.minMoveTime", { min: minMoveTime }) }
+                        </div>
+                    }
                     { errors?.moveTime?.type === "max" &&
                         <div className="invalid-feedback">
-                            { t("createGame.form.error.maxTime", { max: 120 }) }
+                            { t("createGame.form.error.maxMoveTime", { max: maxMoveTime }) }
                         </div>
                     }
 
                 </div>
                 <div className="py-5 d-grid gap-5 mx-auto">
-                    <Button type="submit" variant="primary" size="lg"
-                            disabled={ loading }> { t("btn.create") }
+                    <Button type="submit" variant="primary" size="lg" disabled={ loading }>
+                        { t("btn.create") }
                     </Button>
                 </div>
             </form>
