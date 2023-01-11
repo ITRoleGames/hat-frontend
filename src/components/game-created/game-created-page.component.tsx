@@ -23,7 +23,7 @@ const GameCreatedPage: React.FC<GameCreatedProps> = ({ gameState }) => {
                     <Button variant="success" size="lg" onClick={ () => {
                         alert("Not impl");
                     } }> { t("btn.share") } </Button>
-                    <Link to="/createWords" className="btn btn-lg btn-primary"> { t("btn.next") } </Link>
+                    <Link to="/addWords" className="btn btn-lg btn-primary"> { t("btn.next") } </Link>
                 </div>
             </div>
         </>
