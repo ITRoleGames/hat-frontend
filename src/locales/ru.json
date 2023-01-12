@@ -24,6 +24,7 @@
     "joinGame.form.code": "Код игры",
     "joinGame.title": "Присоединиться к игре",
     "pageNotFound.btn.home": "На главную",
-    "pageNotFound.warning": "Страница не найдена"
+    "pageNotFound.warning": "Страница не найдена",
+    "waitingPlayers.title": "Ждём остальных..."
   }
 }

@@ -24,6 +24,7 @@
     "joinGame.form.code": "Game code",
     "joinGame.title": "Join game",
     "pageNotFound.btn.home": "Go home",
-    "pageNotFound.warning": "Page not found"
+    "pageNotFound.warning": "Page not found",
+    "waitingPlayers.title": "Waiting for others..."
   }
 }
