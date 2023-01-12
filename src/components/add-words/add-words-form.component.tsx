@@ -15,11 +15,11 @@ function AddWordsForm({onFormSubmit, game, loading}: Props) {
     const {t} = useTranslation();
 
     const methods = useForm<WordValues>({
-        mode: "onBlur",
+        mode: "onSubmit",
         defaultValues: { words: [] },
     });
 
-    const {register, control, handleSubmit, formState: {errors}} = methods;
+    const {register, handleSubmit, formState: {errors}} = methods;
 
     const onSubmit: SubmitHandler<WordValues> = data => onFormSubmit(data);
 
@@ -31,10 +31,9 @@ function AddWordsForm({onFormSubmit, game, loading}: Props) {
                         return (
                             <div className="input-group has-validation" key={index}>
                                 <input
-                                    className={"form-control " + (errors.words && errors.words[index] ? "is-invalid" : "")}
+                                    className={"form-control mt-3 " + (errors.words && errors.words[index] ? "is-invalid" : "")}
                                     key={index}
                                     {...register(`words.${index}.value`, {required: true})}
-                                    placeholder="word"
                                     type="text"
                                 />
 
