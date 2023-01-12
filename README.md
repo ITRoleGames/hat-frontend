@@ -7,4 +7,4 @@
 ## Local environment setup 
 1. `npm install`
 2. `npm start`
-3. Open [http://localhost:8000](http://localhost:8000) to view it in the browser.
+3. Open [http://localhost:8999](http://localhost:8999) to view it in the browser.
