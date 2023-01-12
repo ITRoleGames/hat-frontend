@@ -29,9 +29,9 @@ function AddWordsForm({onFormSubmit, game, loading}: Props) {
                 {
                     Array.from({length: game.wordsPerPlayer}).map((_, index: number) => {
                         return (
-                            <div className="input-group has-validation" key={index}>
+                            <div className="input-group has-validation mt-3" key={index}>
                                 <input
-                                    className={"form-control mt-3 " + (errors.words && errors.words[index] ? "is-invalid" : "")}
+                                    className={"form-control " + (errors.words && errors.words[index] ? "is-invalid" : "")}
                                     key={index}
                                     {...register(`words.${index}.value`, {required: true})}
                                     type="text"
