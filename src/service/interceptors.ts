@@ -6,25 +6,23 @@ import { isUserLoggedIn } from "service/local-storage";
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
     if (isUserLoggedIn()) {
         const accessToken = getAccessToken();
-        config.headers!!["Authorization"] = `Bearer ${ accessToken }`;
+        if (config.headers) {
+            config.headers["Authorization"] = `Bearer ${ accessToken }`;
+        }
         return config;
     }
-    // console.info(`[request] [${ JSON.stringify(config) }]`);
     return config;
 };
 
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
-    // console.error(`[request error] [${ JSON.stringify(error) }]`);
     return Promise.reject(error);
 };
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-    // console.info(`[response] [${ JSON.stringify(response) }]`);
     return response;
 };
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
-    // console.error(`[response error] [${ JSON.stringify(error) }]`);
     if (!error.response) {
         return Promise.reject(error);
     }
@@ -40,7 +38,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
         }
 
         showError(errorText);
-    } else if (response.status === 504) {
+    } else if ([ 502, 504 ].indexOf(response.status) !== -1) {
         showError("Server is not available");
     }
 
