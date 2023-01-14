@@ -18,7 +18,7 @@ export interface Game {
     /**
      * Количество слов от каждого участника
      */
-    wordsPerParticipant: number;
+    wordsPerPlayer: number;
 
     /**
      * Время хода в секундах

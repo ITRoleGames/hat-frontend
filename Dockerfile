@@ -1,29 +1,21 @@
+#stage1
 FROM node:16-alpine as builder
 
 WORKDIR /app
-
 COPY package.json package-lock.json /app/
-
 RUN npm install
-
-COPY ./ /app/
-
 # Build the project and copy the files
+COPY ./ /app/
 RUN npm run build
 
-
+#stage2
 FROM nginx:alpine
 
-#!/bin/sh
-
+#copy nginx conf, remove def index page, copy from first stage
 COPY ./nginx.conf /etc/nginx/nginx.conf
-
-## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
-
-# Copy from the stahg 1
 COPY --from=builder /app/build /usr/share/nginx/html
 
-#EXPOSE 3000 80
+EXPOSE 80
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

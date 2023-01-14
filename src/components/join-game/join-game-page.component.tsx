@@ -17,7 +17,7 @@ const JoinGamePage: React.FC<JoinGameProps> = ({ createUser, joinGame }) => {
     const loading = false;
     const handleFormSubmission = async (formData: JoinGameFormData) => {
         createUser().then((user: User) => {
-                joinGame(formData.code, user.id).then(() => navigate("/createWords"));
+                joinGame(formData.code, user.id).then(() => navigate("/addWords"));
             },
         );
     };

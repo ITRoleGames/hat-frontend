@@ -7,6 +7,7 @@ const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
     if (isUserLoggedIn()) {
         const accessToken = getAccessToken();
         if (config.headers) {
+            // @ts-ignore потому что не работает
             config.headers["Authorization"] = `Bearer ${ accessToken }`;
         }
         return config;

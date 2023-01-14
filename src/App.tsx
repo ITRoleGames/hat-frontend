@@ -1,19 +1,17 @@
-import { CompatClient, Stomp } from "@stomp/stompjs";
+import {CompatClient, Stomp} from "@stomp/stompjs";
 import CreateGame from "components/create-game/сreate-game-page.component";
-import CreateWordsPage from "components/create-words-page/create-words-page.component";
+import AddWordsPage from "components/add-words/add-words-page.component";
 import GameCreatedPage from "components/game-created/game-created-page.component";
 import HomePage from "components/home-page.component";
 import JoinGamePage from "components/join-game/join-game-page.component";
 import PageNotFound from "components/page-not-found.component";
 import PrivateRoute from "components/private-route";
-import WaitingPlayersPage from "components/wait-for-players/waiting-players-page.component";
-import { useState } from "react";
-import { useEffect } from "react";
-import React from "react";
-import { Routes } from "react-router";
-import { BrowserRouter, Route } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Routes} from "react-router";
+import {BrowserRouter, Route} from "react-router-dom";
 import SockJS from "sockjs-client";
 import "./App.css";
+import WaitingPlayersPage from "./components/waiting-players/waiting-players-page.component";
 
 const WS_URL = "ws://localhost:9000/game";
 
@@ -79,7 +77,7 @@ function App() {
                 <Route path="/createGame" element={ <CreateGame/> }/>
                 <Route path="/joinGame" element={ <JoinGamePage/> }/>
                 <Route path="/gameCreated" element={ <PrivateRoute component={ GameCreatedPage }/> }/>
-                <Route path="/createWords" element={ <PrivateRoute component={ CreateWordsPage }/> }/>
+                <Route path="/addWords" element={ <PrivateRoute component={ AddWordsPage }/> }/>
                 <Route path="/waitingPlayers" element={ <PrivateRoute component={ WaitingPlayersPage }/> }/>
                 <Route path="*" element={ <PageNotFound/> }>
                 </Route>
