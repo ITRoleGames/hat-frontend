@@ -2,7 +2,7 @@ export interface CreateGameData {
 
     creatorId: string;
 
-    wordsPerParticipant: number;
+    wordsPerPlayer: number;
 
-    moveTimeInSec: number;
+    moveTime: number;
 }

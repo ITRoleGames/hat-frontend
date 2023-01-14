@@ -6,6 +6,7 @@ import { isUserLoggedIn } from "service/local-storage";
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
     if (isUserLoggedIn()) {
         const accessToken = getAccessToken();
+        // @ts-ignore потому что не работает
         config.headers!!["Authorization"] = `Bearer ${ accessToken }`;
         return config;
     }

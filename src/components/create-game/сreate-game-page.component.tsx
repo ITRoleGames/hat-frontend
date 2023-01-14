@@ -1,15 +1,14 @@
-import { createGameAction } from "actions/game.action";
-import { createUserAction } from "actions/user.action";
+import {createGameAction} from "actions/game.action";
+import {createUserAction} from "actions/user.action";
 import CreateGameForm from "components/create-game/create-game-form.component";
 import Header from "components/header/header.component";
-import { CreateGameData } from "model/create-game-data.model";
-import { User } from "model/user.model";
-import { useTranslation } from "react-i18next";
-import { ConnectedProps } from "react-redux";
-import { connect } from "react-redux";
-import { useNavigate } from "react-router";
-import { RootState } from "reducers/combine";
-import { ThunkDispatch } from "redux-thunk";
+import {CreateGameData} from "model/create-game-data.model";
+import {User} from "model/user.model";
+import {useTranslation} from "react-i18next";
+import {connect, ConnectedProps} from "react-redux";
+import {useNavigate} from "react-router";
+import {RootState} from "reducers/combine";
+import {ThunkDispatch} from "redux-thunk";
 
 
 const CreateGamePage: React.FC<CreateGameProps> = ({ userState, gameState, createUser, createGame }) => {
@@ -21,8 +20,8 @@ const CreateGamePage: React.FC<CreateGameProps> = ({ userState, gameState, creat
         createUser().then((user: User) => {
                 const data: CreateGameData = {
                     creatorId: user.id,
-                    wordsPerParticipant: formData.wordsPerParticipant,
-                    moveTimeInSec: formData.moveTime,
+                    wordsPerPlayer: formData.wordsPerPlayer,
+                    moveTime: formData.moveTime,
                 };
                 createGame(data).then(() => navigate("/gameCreated"));
             },
