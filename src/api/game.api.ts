@@ -18,7 +18,7 @@ export class GameApi {
             userId: userId,
         };
 
-        const response = await axios.post(`${ UrlUtils.API_V1 }/games/join`, data);
+        const response = await axios.post(`${ UrlUtils.API_V1 }/game/join`, data);
         return response.data;
     };
 
