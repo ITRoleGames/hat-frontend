@@ -28,6 +28,11 @@ const AddWordsPage: React.FC<AddWordsProps> = ({gameState, addWords}) => {
         addWords(data).then(() => navigate("/waitingPlayers"));
     };
 
+    if(gameState.loading){
+
+        return <>Loading</>
+    }
+
     return (
         <>
             <Header/>
