@@ -1,6 +1,5 @@
-import { GameActionType } from "actions/game.action";
-import { GameAction } from "actions/game.action";
-import { Game } from "model/game.model";
+import {GameAction, GameActionType} from "actions/game.action";
+import {Game} from "model/game.model";
 
 
 interface GameState {
@@ -32,6 +31,40 @@ const gameReducer = (state: GameState = initialState, action: GameAction): GameS
                 loading: true
             };
         case GameActionType.CREATE_GAME_FAILED:
+            return {
+                loading: false,
+                game: null,
+                error: action.error,
+            };
+        case GameActionType.GET_GAME_SUCCESS:
+            return {
+                loading: false,
+                game: action.payload,
+                error: null,
+            };
+        case GameActionType.GET_GAME_PENDING:
+            return {
+                ...state,
+                loading: true
+            };
+        case GameActionType.GET_GAME_FAILED:
+            return {
+                loading: false,
+                game: null,
+                error: action.error,
+            };
+        case GameActionType.JOIN_GAME_SUCCESS:
+            return {
+                loading: false,
+                game: action.payload,
+                error: null,
+            };
+        case GameActionType.JOIN_GAME_PENDING:
+            return {
+                ...state,
+                loading: true
+            };
+        case GameActionType.JOIN_GAME_FAILED:
             return {
                 loading: false,
                 game: null,
