@@ -3,11 +3,7 @@ const GAME_ID = "gameId";
 
 export function isUserLoggedIn(): boolean {
 
-    if (localStorage.getItem(TOKEN_LOCAL_STORAGE_ATTRIBUTE_NAME)) {
-        return true;
-    }
-
-    return false;
+    return !!localStorage.getItem(TOKEN_LOCAL_STORAGE_ATTRIBUTE_NAME);
 }
 
 export function getAccessToken(): string | null {
@@ -16,16 +12,20 @@ export function getAccessToken(): string | null {
 }
 
 export function registerAccessToken(token: string): void {
-    
+
     localStorage.setItem(TOKEN_LOCAL_STORAGE_ATTRIBUTE_NAME, token);
 }
 
-export function getGameId(): string | null {
+export function getGameIdFromLocalStorage(): string | null {
 
     return localStorage.getItem(GAME_ID);
 }
 
-export function registerGameId(gameId: string): void {
+export function registerGameIdInLocalStorage(gameId: string): void {
 
     localStorage.setItem(GAME_ID, gameId);
+}
+
+export function clearGameIdInLocalStorage(): void {
+    localStorage.removeItem(GAME_ID)
 }

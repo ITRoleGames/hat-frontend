@@ -4,7 +4,7 @@ import {CreateGameData} from "model/create-game-data.model";
 import {Game} from "model/game.model";
 import {AnyAction} from "redux";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {registerGameId} from "../service/local-storage";
+import {clearGameIdInLocalStorage, registerGameIdInLocalStorage} from "../service/local-storage";
 
 export enum GameActionType {
     GET_GAME_SUCCESS = "GET_GAME_SUCCESS",
@@ -116,9 +116,10 @@ export const getGameActionFailed = (error: string): GetGameActionFailed => {
 export const createGameAction = (data: CreateGameData): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
         return new Promise<void>((resolve) => {
+            clearGameIdInLocalStorage()
             dispatch(createGameActionPending());
             GameApi.createGame(data).then((game: Game) => {
-                registerGameId(game.id)
+                registerGameIdInLocalStorage(game.id)
                 dispatch(createGameActionSuccess(game));
                 resolve();
             }).catch((error: AxiosError) => dispatch(createGameActionFailed(error.message)));
@@ -129,9 +130,10 @@ export const createGameAction = (data: CreateGameData): ThunkAction<Promise<void
 export const joinGameAction = (code: string, userId: string): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
         return new Promise<void>((resolve) => {
+            clearGameIdInLocalStorage()
             dispatch(joinGameActionPending());
             GameApi.joinGame(code, userId).then((game: Game) => {
-                registerGameId(game.id)
+                registerGameIdInLocalStorage(game.id)
                 dispatch(joinGameActionSuccess(game));
                 resolve();
             }).catch((error: AxiosError) => dispatch(joinGameActionFailed(error.message)));

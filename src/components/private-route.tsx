@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from "react-redux";
 import {Navigate} from "react-router-dom";
 import {RootState} from "reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
-import {getGameId, isUserLoggedIn} from "service/local-storage";
+import {getGameIdFromLocalStorage, isUserLoggedIn} from "service/local-storage";
 import {getGameAction} from "../actions/game.action";
 
 interface PrivateRouteProps {
@@ -26,7 +26,7 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
         }
 
         if (gameState.game == null && !gameState.loading) {
-            const gameId = getGameId();
+            const gameId = getGameIdFromLocalStorage();
             if (gameId) {
                 getGame(gameId);
             }
