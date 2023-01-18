@@ -24,9 +24,8 @@
     "homePage.btn.newGame": "New game",
     "joinGame.form.code": "Game code",
     "joinGame.title": "Join game",
-    "waitingPlayers.title": "Waiting for others...",
     "pageNotFound.btn.home": "Go home",
     "pageNotFound.warning": "Page not found",
-    "waitingPlayers.title": "Waiting for others..."
+    "waitingPlayers.title": "Waiting for players"
   }
 }

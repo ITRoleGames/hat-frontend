@@ -24,9 +24,8 @@
     "homePage.btn.newGame": "Новая игра",
     "joinGame.form.code": "Код игры",
     "joinGame.title": "Присоединиться к игре",
-    "waitingPlayers.title": "Ждём остальных...",
     "pageNotFound.btn.home": "На главную",
     "pageNotFound.warning": "Страница не найдена",
-    "waitingPlayers.title": "Ждём остальных..."
+    "waitingPlayers.title": "Ожидание игроков"
   }
 }
