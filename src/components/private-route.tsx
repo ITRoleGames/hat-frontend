@@ -18,6 +18,7 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
         component: Component,
         userState,
         gameState,
+        gameUsersState,
         getUser,
         getGame,
         getGameUsers
@@ -34,15 +35,17 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
                 getGame(gameId).then(game => getGameUsers(game.users))
             }
         }
+
         return <Component/>;
     }
 
     return <Navigate to="/"/>;
-};
+}
 
 const mapStateToProps = (state: RootState) => ({
     userState: state.user,
     gameState: state.game,
+    gameUsersState: state.gameUsers,
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
