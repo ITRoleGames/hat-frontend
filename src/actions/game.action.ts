@@ -141,13 +141,13 @@ export const joinGameAction = (code: string, userId: string): ThunkAction<Promis
     };
 };
 
-export const getGameAction = (gameId: string): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-        return new Promise<void>((resolve) => {
+export const getGameAction = (gameId: string): ThunkAction<Promise<Game>, {}, {}, AnyAction> => {
+    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<Game> => {
+        return new Promise<Game>((resolve) => {
             dispatch(getGameActionPending());
             GameApi.getGame(gameId).then((game: Game) => {
                 dispatch(getGameActionSuccess(game));
-                resolve();
+                resolve(game);
             }).catch((error: AxiosError) => dispatch(getGameActionFailed(error.message)));
         });
     };
