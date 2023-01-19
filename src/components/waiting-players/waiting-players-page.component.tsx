@@ -3,11 +3,26 @@ import {useTranslation} from "react-i18next";
 import PlayersList from "./player-list.component";
 import {RootState} from "../../reducers/combine";
 import {connect, ConnectedProps} from "react-redux";
+import {ThunkDispatch} from "redux-thunk";
+import {Action} from "redux";
+import {getGameUsersAction} from "../../slice/game-users.slice";
+import {useEffect} from "react";
 
-const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState}) => {
+const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGameUsers}) => {
 
     const {t} = useTranslation();
     const loading = gameState.loading || gameUsersState.loading
+
+    useEffect(() => {
+        if (gameState.loading || gameUsersState.loading) {
+            return
+        }
+
+        if (gameState.game && (gameState.game.users.length > gameUsersState.users.length)) {
+            getGameUsers(gameState.game.users.map(u => u))
+        }
+
+    }, [gameState])
 
     return (
         <>
@@ -26,8 +41,12 @@ const mapStateToProps = (state: RootState) => ({
     gameUsersState: state.gameUsers,
 });
 
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
+    getGameUsers: async (ids: string[]) => await dispatch(getGameUsersAction(ids)),
+});
 
-const connector = connect(mapStateToProps, null);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type Props = ConnectedProps<typeof connector>;
 
