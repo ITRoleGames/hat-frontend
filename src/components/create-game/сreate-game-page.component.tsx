@@ -9,6 +9,7 @@ import {connect, ConnectedProps} from "react-redux";
 import {useNavigate} from "react-router";
 import {RootState} from "reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
+import {Action} from "redux";
 
 
 const CreateGamePage: React.FC<CreateGameProps> = ({ userState, gameState, createUser, createGame }) => {
@@ -45,7 +46,7 @@ const mapStateToProps = (state: RootState) => ({
     gameState: state.game,
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
     createUser: async () => await dispatch(createUserAction()),
     createGame: async (data: CreateGameData) => await dispatch(createGameAction(data)),
 });
