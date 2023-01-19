@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Game } from "model/game.model";
-import { User } from "model/user.model";
-import { UrlUtils } from "utils/url-utils";
+import {User} from "model/user.model";
+import {UrlUtils} from "utils/url-utils";
 
 export class UserApi {
 
@@ -16,10 +15,8 @@ export class UserApi {
         return response.data;
     };
 
-    //todo: without token
-    static getUser = async (id: string): Promise<User> => {
-
-        const response = await axios.get(`${ UrlUtils.API_V1 }/users/${id}`);
+    static getUsers = async (ids: string[]): Promise<User[]> => {
+        const response = await axios.get(`${ UrlUtils.API_V1 }/users?ids=${ids.join(",")}`);
         return response.data;
     };
 }
