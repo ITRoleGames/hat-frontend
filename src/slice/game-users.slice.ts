@@ -26,6 +26,9 @@ const gameUsersSlice = createSlice({
             state.loading = false
             state.error = action.payload
         },
+        clearGameUsersAction: (state: GameUsersState) => {
+            state.users = []
+        },
     }
 })
 
@@ -54,6 +57,11 @@ export const getGameUsersAction = (ids: string[]): ThunkAction<Promise<User[]>, 
     };
 };
 
-export const {getGameUsersActionPending, getGameUsersActionSuccess, getGameUsersActionFailed} = gameUsersSlice.actions
+export const {
+    getGameUsersActionPending,
+    getGameUsersActionSuccess,
+    getGameUsersActionFailed,
+    clearGameUsersAction
+} = gameUsersSlice.actions
 
 export default gameUsersSlice.reducer;
