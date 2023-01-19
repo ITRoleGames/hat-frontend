@@ -6,6 +6,7 @@ import {RootState} from "reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
 import {getGameIdFromLocalStorage, isUserLoggedIn} from "service/local-storage";
 import {getGameAction} from "../actions/game.action";
+import {getGameUsersAction} from "../slice/game-users.slice";
 
 interface PrivateRouteProps {
     component: React.FC;
@@ -17,18 +18,19 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
         userState,
         gameState,
         getUser,
-        getGame
+        getGame,
+        getGameUsers
     }
 ) => {
     if (isUserLoggedIn()) {
-        if (userState.user == null && !userState.loading) {
+        if (userState.user == null && !userState.loading && !userState.error) {
             getUser();
         }
 
-        if (gameState.game == null && !gameState.loading) {
+        if (gameState.game == null && !gameState.loading && !gameState.error) {
             const gameId = getGameIdFromLocalStorage();
             if (gameId) {
-                getGame(gameId);
+                getGame(gameId).then(game => getGameUsers(game.users))
             }
         }
         return <Component/>;
@@ -45,6 +47,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
     getUser: async () => await dispatch(getCurrentUserAction()),
     getGame: async (id: string) => await dispatch(getGameAction(id)),
+    getGameUsers: async (ids: string[]) => await dispatch(getGameUsersAction(ids)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
