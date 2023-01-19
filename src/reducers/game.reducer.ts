@@ -27,7 +27,8 @@ const gameReducer = (state: GameState = initialState, action: GameAction): GameS
             };
         case GameActionType.CREATE_GAME_PENDING:
             return {
-                ...state,
+                error: null,
+                game: null,
                 loading: true
             };
         case GameActionType.CREATE_GAME_FAILED:
@@ -61,7 +62,8 @@ const gameReducer = (state: GameState = initialState, action: GameAction): GameS
             };
         case GameActionType.JOIN_GAME_PENDING:
             return {
-                ...state,
+                error: null,
+                game: null,
                 loading: true
             };
         case GameActionType.JOIN_GAME_FAILED:
