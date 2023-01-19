@@ -2,5 +2,5 @@ export interface GameEvent {
 
     type: string;
 
-    gameId: String
+    gameId: string
 }

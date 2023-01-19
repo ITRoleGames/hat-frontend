@@ -9,6 +9,7 @@ import { ConnectedProps } from "react-redux";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
+import {Action} from "redux";
 
 const JoinGamePage: React.FC<JoinGameProps> = ({ createUser, joinGame }) => {
 
@@ -33,7 +34,7 @@ const JoinGamePage: React.FC<JoinGameProps> = ({ createUser, joinGame }) => {
     );
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
     createUser: async () => await dispatch(createUserAction()),
     joinGame: async (code: string, userId: string) => await dispatch(joinGameAction(code, userId)),
 });

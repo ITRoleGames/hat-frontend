@@ -8,7 +8,7 @@ const reducers = combineReducers({
     user: userReducer,
     game: gameReducer,
     gameUsers: gameUsersSlice,
-    event: eventReducer,
+    eventState: eventReducer,
 });
 
 export default reducers;

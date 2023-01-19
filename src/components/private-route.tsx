@@ -7,6 +7,7 @@ import {ThunkDispatch} from "redux-thunk";
 import {getGameIdFromLocalStorage, isUserLoggedIn} from "service/local-storage";
 import {getGameAction} from "../actions/game.action";
 import {getGameUsersAction} from "../slice/game-users.slice";
+import {Action} from "redux";
 
 interface PrivateRouteProps {
     component: React.FC;
@@ -44,7 +45,7 @@ const mapStateToProps = (state: RootState) => ({
     gameState: state.game,
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
     getUser: async () => await dispatch(getCurrentUserAction()),
     getGame: async (id: string) => await dispatch(getGameAction(id)),
     getGameUsers: async (ids: string[]) => await dispatch(getGameUsersAction(ids)),

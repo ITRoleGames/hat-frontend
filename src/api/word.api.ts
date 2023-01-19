@@ -1,6 +1,4 @@
-import axios from "axios";
 import {AddWordsData} from "model/add-words-data.model";
-import {UrlUtils} from "utils/url-utils";
 
 export class WordApi {
 
