@@ -26,7 +26,6 @@ function PlayersList({game, gameUsers}: Props) {
             }
         </div>
     );
-
 }
 
 export default PlayersList;

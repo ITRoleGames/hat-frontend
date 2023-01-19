@@ -58,15 +58,6 @@ const connect = (gameId: string, store: MiddlewareAPI): CompatClient => {
         });
 
         stompClient.reconnect_delay = 1000
-
-        // stompClient.disconnect(()=>{
-        //     setTimeout(function() {
-        //         console.log("reconnecting...")
-        //         connect();
-        //     }, 1000);
-        // })
-        //
-        // stompClient.one
     })
 
     return stompClient

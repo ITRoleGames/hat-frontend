@@ -31,13 +31,11 @@ interface CreateGameActionPending {
 
 interface CreateGameActionFailed {
     type: GameActionType.CREATE_GAME_FAILED;
-
     error: string;
 }
 
 interface JoinGameActionSuccess {
     type: GameActionType.JOIN_GAME_SUCCESS;
-
     payload: Game;
 }
 
@@ -47,13 +45,11 @@ interface JoinGameActionPending {
 
 interface JoinGameActionFailed {
     type: GameActionType.JOIN_GAME_FAILED;
-
     error: string;
 }
 
 interface GetGameActionSuccess {
     type: GameActionType.GET_GAME_SUCCESS;
-
     payload: Game;
 }
 
@@ -63,7 +59,6 @@ interface GetGameActionPending {
 
 interface GetGameActionFailed {
     type: GameActionType.GET_GAME_FAILED;
-
     error: string;
 }
 

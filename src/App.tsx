@@ -11,7 +11,6 @@ import {BrowserRouter, Route} from "react-router-dom";
 import "./App.css";
 import WaitingPlayersPage from "./components/waiting-players/waiting-players-page.component";
 
-
 function App() {
 
     return (
