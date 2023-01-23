@@ -4,6 +4,7 @@ import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {UserApi} from "../api/user.api";
 import {AxiosError} from "axios";
+import {GetUsersResponse} from "../dto/get-users-response";
 
 const initialState: GameUsersState = {
     users: [],
@@ -49,9 +50,9 @@ export const getGameUsersAction = (ids: string[]): ThunkAction<Promise<User[]>, 
         return new Promise<User[]>((resolve) => {
             dispatch(getGameUsersActionPending());
 
-            return UserApi.getUsers(ids).then((users: User[]) => {
-                dispatch(getGameUsersActionSuccess(users));
-                resolve(users);
+            return UserApi.getUsers(ids).then((resp: GetUsersResponse) => {
+                dispatch(getGameUsersActionSuccess(resp.users));
+                resolve(resp.users);
             }).catch((error: AxiosError) => dispatch(getGameUsersActionFailed(error.message)));
         });
     };

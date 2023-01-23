@@ -6,12 +6,12 @@ import {GameApi} from "../api/game.api";
 import {Game} from "../model/game.model";
 import {AxiosError} from "axios";
 import {UserApi} from "../api/user.api";
-import {User} from "../model/user.model";
 import {
     getGameUsersActionFailed,
     getGameUsersActionPending,
     getGameUsersActionSuccess
 } from "../slice/game-users.slice";
+import {GetUsersResponse} from "../dto/get-users-response";
 
 const webSocketMiddleware: Middleware = store => {
 
@@ -50,8 +50,8 @@ const connect = (gameId: string, store: MiddlewareAPI): CompatClient => {
                     store.dispatch(getGameActionSuccess(game));
 
                     store.dispatch(getGameUsersActionPending(users));
-                    UserApi.getUsers(game.users).then((users: User[]) => {
-                        store.dispatch(getGameUsersActionSuccess(users));
+                    UserApi.getUsers(game.players.map(p => p.userId)).then((resp: GetUsersResponse) => {
+                        store.dispatch(getGameUsersActionSuccess(resp.users));
                     }).catch((error: AxiosError) => store.dispatch(getGameUsersActionFailed(error.message)));
                 }).catch((error: AxiosError) => store.dispatch(getGameActionFailed(error.message)));
             }

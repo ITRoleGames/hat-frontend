@@ -18,8 +18,8 @@ const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGame
             return
         }
 
-        if (gameState.game && (gameState.game.users.length > gameUsersState.users.length)) {
-            getGameUsers(gameState.game.users.map(u => u))
+        if (gameState.game && (gameState.game.players.length > gameUsersState.users.length)) {
+            getGameUsers(gameState.game.players.map(player => player.userId))
         }
     }, [gameState])
 
