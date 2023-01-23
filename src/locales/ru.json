@@ -4,6 +4,7 @@
     "btn.join": "Присоединиться",
     "btn.next": "Далее",
     "btn.share": "Поделиться",
+    "btn.startRound": "Начать раунд",
     "btd.words.add": "Положить в шапку",
     "createGame.form.error.minWordsPerPlayer": "Минимально может быть {{min}} слово",
     "createGame.form.error.maxWordsPerPlayer": "Максимально может быть {{max}} слов",
@@ -26,6 +27,12 @@
     "joinGame.title": "Присоединиться к игре",
     "pageNotFound.btn.home": "На главную",
     "pageNotFound.warning": "Страница не найдена",
-    "waitingPlayers.title": "Ожидание игроков"
+    "waitingPlayers.title": "Ожидание игроков",
+    "gameStarted.title": "Игра началась!",
+    "game.youTurn": "Внимание! Ваша очередь загадывать слово!",
+    "game.wordsCount": "Слов в шапке",
+    "team.team" : "Команда",
+    "team.wordsCount" : "Слова команды",
+    "team.yourTeam" : "Ваша команда"
   }
 }

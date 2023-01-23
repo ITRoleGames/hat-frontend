@@ -10,6 +10,7 @@ import {Routes} from "react-router";
 import {BrowserRouter, Route} from "react-router-dom";
 import "./App.css";
 import WaitingPlayersPage from "./components/waiting-players/waiting-players-page.component";
+import GameStartedContainer from "./containers/game-started-container";
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/gameCreated" element={<PrivateRoute component={GameCreatedPage}/>}/>
                 <Route path="/addWords" element={<PrivateRoute component={AddWordsPage}/>}/>
                 <Route path="/waitingPlayers" element={<PrivateRoute component={WaitingPlayersPage}/>}/>
+                <Route path="/gameStarted" element={<PrivateRoute component={GameStartedContainer}/>}/>
                 <Route path="*" element={<PageNotFound/>}>
                 </Route>
             </Routes>

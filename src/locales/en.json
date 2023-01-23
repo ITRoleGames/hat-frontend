@@ -4,6 +4,7 @@
     "btn.join": "Join",
     "btn.next": "Next",
     "btn.share": "Share",
+    "btn.startRound": "Start round",
     "btn.words.add": "Put into the hat",
     "createGame.form.error.minWordsPerPlayer": "Maximum number of words is {{min}}",
     "createGame.form.error.maxWordsPerPlayer": "Maximum number of words is {{max}}",
@@ -26,6 +27,12 @@
     "joinGame.title": "Join game",
     "pageNotFound.btn.home": "Go home",
     "pageNotFound.warning": "Page not found",
-    "waitingPlayers.title": "Waiting for players"
+    "waitingPlayers.title": "Waiting for players",
+    "gameStarted.title": "The game started!",
+    "game.youTurn": "Attention! You turn to guess words!",
+    "game.wordsCount": "Total words",
+    "team.team" : "Team",
+    "team.wordsCount" : "Team's words",
+    "team.yourTeam" : "Your team"
   }
 }
