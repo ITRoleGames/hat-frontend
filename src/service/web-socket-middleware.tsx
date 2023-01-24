@@ -39,8 +39,19 @@ const webSocketMiddleware: Middleware = store => {
 
 const connect = (gameId: string, store: MiddlewareAPI): CompatClient => {
     const users = store.getState().gameUsers.users;
-    const socket = new WebSocket("ws://localhost:9002/api/v1/ws");
-    const stompClient = Stomp.over(socket);
+
+    let webSocketUrl: string;
+    if (process.env.REACT_APP_WEBSOCKET_URL) {
+
+        webSocketUrl = process.env.REACT_APP_WEBSOCKET_URL
+    } else {
+        console.log("using current host")
+        const url = new URL("ws", window.location.href);
+        url.protocol = url.protocol.replace("http", "ws");
+        webSocketUrl = url.href;
+    }
+
+    const stompClient = Stomp.client(webSocketUrl);
     stompClient.connect({}, () => {
         stompClient.subscribe(`/topic/game/${gameId}`, function (msg) {
             const gameEvent = JSON.parse(msg.body)

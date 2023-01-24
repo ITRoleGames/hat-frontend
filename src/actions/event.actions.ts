@@ -1,6 +1,11 @@
 export enum EventActionType {
+    CONNECT = "CONNECT",
     CONNECTING = "CONNECTING",
     CONNECTED = "CONNECTED",
+}
+
+interface ConnectAction {
+    type: EventActionType.CONNECT;
 }
 
 interface ConnectingAction {
@@ -11,7 +16,11 @@ interface ConnectedAction {
     type: EventActionType.CONNECTED;
 }
 
-export type EventAction = ConnectingAction | ConnectedAction
+export type EventAction = ConnectAction | ConnectingAction | ConnectedAction
+
+export const connectAction = (): ConnectAction => {
+    return {type: EventActionType.CONNECT};
+};
 
 export const connectingAction = (): ConnectingAction => {
     return {type: EventActionType.CONNECTING};
