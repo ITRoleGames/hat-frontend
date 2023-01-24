@@ -26,6 +26,7 @@
     "joinGame.title": "Присоединиться к игре",
     "pageNotFound.btn.home": "На главную",
     "pageNotFound.warning": "Страница не найдена",
-    "waitingPlayers.title": "Ожидание игроков"
+    "waitingPlayers.title": "Ожидание игроков",
+    "loading": "Загрузка..."
   }
 }

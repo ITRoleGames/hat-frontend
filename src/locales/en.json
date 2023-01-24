@@ -26,6 +26,7 @@
     "joinGame.title": "Join game",
     "pageNotFound.btn.home": "Go home",
     "pageNotFound.warning": "Page not found",
-    "waitingPlayers.title": "Waiting for players"
+    "waitingPlayers.title": "Waiting for players",
+    "loading": "Loading..."
   }
 }
