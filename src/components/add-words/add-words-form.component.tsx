@@ -16,7 +16,7 @@ function AddWordsForm({onFormSubmit, game, loading}: Props) {
 
     const methods = useForm<WordValues>({
         mode: "onSubmit",
-        defaultValues: { words: [] },
+        defaultValues: { words: [] , gameId: game.id},
     });
 
     const {register, handleSubmit, formState: {errors}} = methods;

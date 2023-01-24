@@ -42,10 +42,8 @@ const connect = (gameId: string, store: MiddlewareAPI): CompatClient => {
 
     let webSocketUrl: string;
     if (process.env.REACT_APP_WEBSOCKET_URL) {
-
         webSocketUrl = process.env.REACT_APP_WEBSOCKET_URL
     } else {
-        console.log("using current host")
         const url = new URL("ws", window.location.href);
         url.protocol = url.protocol.replace("http", "ws");
         webSocketUrl = url.href;

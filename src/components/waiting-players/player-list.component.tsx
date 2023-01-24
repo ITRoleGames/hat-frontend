@@ -1,17 +1,16 @@
-import {Game} from "model/game.model";
 import {User} from "model/user.model";
-import {PersonCircle} from "react-bootstrap-icons";
 import {Player} from "../../model/player.model";
 import {PlayerWithName} from "../../dto/player-with-name";
+import PlayerIcon from "../common/payer-icon.component";
 
 type Props = {
-    game: Game,
+    payers: Player[],
     gameUsers: User[]
 };
 
-function PlayersList({game, gameUsers}: Props) {
+function PlayersList({payers = [], gameUsers}: Props) {
 
-    const players: PlayerWithName[] = game.players.map((player: Player): PlayerWithName => {
+    const players: PlayerWithName[] = payers.map((player: Player): PlayerWithName => {
         const gameUser = gameUsers?.find(gu => gu.id == player.userId);
         return {...player, name: gameUser ? gameUser.name : "unknown"}
     });
@@ -21,7 +20,7 @@ function PlayersList({game, gameUsers}: Props) {
             {
                 players.map(player => {
                     return <div key={player.id} className="d-flex flex-row justify-content-left mb-2">
-                        <PersonCircle size="50" color="grey"/>
+                        <PlayerIcon playerStatus={player.status}/>
                         <div
                             className="align-self-center text-start ms-2"> {player.name}</div>
                     </div>
