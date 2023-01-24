@@ -12,19 +12,15 @@ import {ThunkDispatch} from "redux-thunk";
 import {Action} from "redux";
 
 
-const CreateGamePage: React.FC<CreateGameProps> = ({ userState, gameState, createUser, createGame }) => {
-    const { loading } = userState;
+const CreateGamePage: React.FC<CreateGameProps> = ({userState, createUser, createGame}) => {
+    const {loading} = userState;
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
-    const handleFormSubmission = async (formData: any) => {
+    const handleFormSubmission = async (formData: CreateGameData) => {
         createUser().then((user: User) => {
-                const data: CreateGameData = {
-                    creatorId: user.id,
-                    wordsPerPlayer: formData.wordsPerPlayer,
-                    moveTime: formData.moveTime,
-                };
-                createGame(data).then(() => navigate("/gameCreated"));
+                formData.creatorId = user.id
+                createGame(formData).then(() => navigate("/gameCreated"));
             },
         );
     };
@@ -33,9 +29,9 @@ const CreateGamePage: React.FC<CreateGameProps> = ({ userState, gameState, creat
         <>
             <Header/>
             <div className="px-4 py-5 my-5 text-center">
-                <h1 className="display-3 fw-bold">{ t("createGame.title") }</h1>
-                <h2 className="display-6 fw-bold">{ t("createGame.settings") }</h2>
-                <CreateGameForm onFormSubmit={ handleFormSubmission } loading={ loading }/>
+                <h1 className="display-3 fw-bold">{t("createGame.title")}</h1>
+                <h2 className="display-6 fw-bold">{t("createGame.settings")}</h2>
+                <CreateGameForm onFormSubmit={handleFormSubmission} loading={loading}/>
             </div>
         </>
     );
@@ -43,7 +39,6 @@ const CreateGamePage: React.FC<CreateGameProps> = ({ userState, gameState, creat
 
 const mapStateToProps = (state: RootState) => ({
     userState: state.user,
-    gameState: state.game,
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({

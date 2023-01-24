@@ -1,7 +1,5 @@
-import {PlayerStatus} from "../model/player-status";
+import {Player} from "../model/player.model";
 
-export interface PlayerWithName {
-    id: string,
-    status: PlayerStatus,
+export interface PlayerWithName extends Player {
     name: string
 }

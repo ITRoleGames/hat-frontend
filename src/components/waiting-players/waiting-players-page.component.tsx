@@ -7,19 +7,19 @@ import {ThunkDispatch} from "redux-thunk";
 import {Action} from "redux";
 import {getGameUsersAction} from "../../slice/game-users.slice";
 import {useEffect} from "react";
+import {Player} from "../../model/player.model";
 
 const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGameUsers}) => {
 
     const {t} = useTranslation();
-    const loading = gameState.loading || gameUsersState.loading
-
+    const players: Player[] = gameState?.game?.players ? gameState.game.players : []
     useEffect(() => {
         if (gameState.loading || gameUsersState.loading) {
             return
         }
 
-        if (gameState.game && (gameState.game.users.length > gameUsersState.users.length)) {
-            getGameUsers(gameState.game.users.map(u => u))
+        if (gameState.game && (gameState.game.players.length > gameUsersState.users.length)) {
+            getGameUsers(gameState.game.players.map(player => player.userId))
         }
     }, [gameState])
 
@@ -28,8 +28,7 @@ const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGame
             <Header/>
             <div className="px-4 text-center">
                 <h1 className="display-5 fw-bold">{t("waitingPlayers.title")}</h1>
-                {loading && <>Loading...</>}
-                {!loading && <PlayersList game={gameState.game!!} gameUsers={gameUsersState.users}/>}
+                <PlayersList payers={players} gameUsers={gameUsersState.users}/>
             </div>
         </>
     );

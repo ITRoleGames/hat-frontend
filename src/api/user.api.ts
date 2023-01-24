@@ -1,6 +1,7 @@
 import axios from "axios";
 import {User} from "model/user.model";
 import {UrlUtils} from "utils/url-utils";
+import {GetUsersResponse} from "../dto/get-users-response";
 
 export class UserApi {
 
@@ -15,7 +16,7 @@ export class UserApi {
         return response.data;
     };
 
-    static getUsers = async (ids: string[]): Promise<User[]> => {
+    static getUsers = async (ids: string[]): Promise<GetUsersResponse> => {
         const response = await axios.get(`${ UrlUtils.API_V1 }/users?ids=${ids.join(",")}`);
         return response.data;
     };

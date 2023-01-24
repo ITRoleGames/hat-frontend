@@ -3,7 +3,7 @@ import {Game} from "model/game.model";
 
 
 interface GameState {
-    game: Game | null;
+    game?: Game;
 
     loading: boolean;
 
@@ -11,7 +11,6 @@ interface GameState {
 }
 
 const initialState: GameState = {
-    game: null,
     loading: false,
     error: null,
 };
@@ -28,13 +27,13 @@ const gameReducer = (state: GameState = initialState, action: GameAction): GameS
         case GameActionType.CREATE_GAME_PENDING:
             return {
                 error: null,
-                game: null,
+                game: undefined,
                 loading: true
             };
         case GameActionType.CREATE_GAME_FAILED:
             return {
                 loading: false,
-                game: null,
+                game: undefined,
                 error: action.error,
             };
         case GameActionType.GET_GAME_SUCCESS:
@@ -51,7 +50,7 @@ const gameReducer = (state: GameState = initialState, action: GameAction): GameS
         case GameActionType.GET_GAME_FAILED:
             return {
                 loading: false,
-                game: null,
+                game: undefined,
                 error: action.error,
             };
         case GameActionType.JOIN_GAME_SUCCESS:
@@ -63,13 +62,12 @@ const gameReducer = (state: GameState = initialState, action: GameAction): GameS
         case GameActionType.JOIN_GAME_PENDING:
             return {
                 error: null,
-                game: null,
                 loading: true
             };
         case GameActionType.JOIN_GAME_FAILED:
             return {
                 loading: false,
-                game: null,
+                game: undefined,
                 error: action.error,
             };
         default:

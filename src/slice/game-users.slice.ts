@@ -4,6 +4,7 @@ import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {UserApi} from "../api/user.api";
 import {AxiosError} from "axios";
+import {GetUsersResponse} from "../dto/get-users-response";
 
 const initialState: GameUsersState = {
     users: [],
@@ -20,7 +21,7 @@ const gameUsersSlice = createSlice({
         },
         getGameUsersActionSuccess: (state: GameUsersState, action: PayloadAction<User[]>) => {
             state.loading = false
-            state.users = mergeUsers(state.users, action.payload)
+            state.users = mergeUsers(state.users, action.payload);
         },
         getGameUsersActionFailed: (state: GameUsersState, action: PayloadAction<string>) => {
             state.loading = false
@@ -32,10 +33,19 @@ const gameUsersSlice = createSlice({
     }
 })
 
-const mergeUsers = (firstUserList: User[], secondUserList: User[]): User[] => {
+const mergeUsers = (currentGameUsers: User[], updatedGameUsers: User[]): User[] => {
 
-    const firstUserListIds = firstUserList.map(u => u.id);
-    return [...firstUserList, ...secondUserList.filter((user) => firstUserListIds.indexOf(user.id) < 0)]
+    const result: User[] = [...currentGameUsers]
+    updatedGameUsers.forEach(updatedUser => {
+        const currentUserIndex = result.findIndex((user) => user.id == updatedUser.id);
+        if (currentUserIndex != -1) {
+            result[currentUserIndex] = {...updatedUser}
+        } else {
+            result.push(updatedUser)
+        }
+    })
+
+    return result
 }
 
 interface GameUsersState {
@@ -49,9 +59,9 @@ export const getGameUsersAction = (ids: string[]): ThunkAction<Promise<User[]>, 
         return new Promise<User[]>((resolve) => {
             dispatch(getGameUsersActionPending());
 
-            return UserApi.getUsers(ids).then((users: User[]) => {
-                dispatch(getGameUsersActionSuccess(users));
-                resolve(users);
+            return UserApi.getUsers(ids).then((resp: GetUsersResponse) => {
+                dispatch(getGameUsersActionSuccess(resp.users));
+                resolve(resp.users);
             }).catch((error: AxiosError) => dispatch(getGameUsersActionFailed(error.message)));
         });
     };

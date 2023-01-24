@@ -1,3 +1,5 @@
+import {Player} from "./player.model";
+
 export interface Game {
 
     /**
@@ -28,5 +30,5 @@ export interface Game {
     /**
      * Игроки
      */
-    users: string[];
+    players: Player[];
 }

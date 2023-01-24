@@ -33,6 +33,7 @@
     "game.wordsCount": "Слов в шапке",
     "team.team" : "Команда",
     "team.wordsCount" : "Слова команды",
-    "team.yourTeam" : "Ваша команда"
+    "team.yourTeam" : "Ваша команда",
+    "loading": "Загрузка..."
   }
 }

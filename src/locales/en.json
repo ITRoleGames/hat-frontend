@@ -33,6 +33,7 @@
     "game.wordsCount": "Total words",
     "team.team" : "Team",
     "team.wordsCount" : "Team's words",
-    "team.yourTeam" : "Your team"
+    "team.yourTeam" : "Your team",
+    "loading": "Loading..."
   }
 }

@@ -18,7 +18,6 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
         component: Component,
         userState,
         gameState,
-        gameUsersState,
         getUser,
         getGame,
         getGameUsers
@@ -32,7 +31,7 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
         if (gameState.game == null && !gameState.loading && !gameState.error) {
             const gameId = getGameIdFromLocalStorage();
             if (gameId) {
-                getGame(gameId).then(game => getGameUsers(game.users))
+                getGame(gameId).then(game => getGameUsers(game.players.map(p => p.userId)))
             }
         }
 
@@ -44,8 +43,7 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
 
 const mapStateToProps = (state: RootState) => ({
     userState: state.user,
-    gameState: state.game,
-    gameUsersState: state.gameUsers,
+    gameState: state.game
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({

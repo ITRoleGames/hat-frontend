@@ -6,12 +6,12 @@ import {GameApi} from "../api/game.api";
 import {Game} from "../model/game.model";
 import {AxiosError} from "axios";
 import {UserApi} from "../api/user.api";
-import {User} from "../model/user.model";
 import {
     getGameUsersActionFailed,
     getGameUsersActionPending,
     getGameUsersActionSuccess
 } from "../slice/game-users.slice";
+import {GetUsersResponse} from "../dto/get-users-response";
 
 const webSocketMiddleware: Middleware = store => {
 
@@ -39,8 +39,17 @@ const webSocketMiddleware: Middleware = store => {
 
 const connect = (gameId: string, store: MiddlewareAPI): CompatClient => {
     const users = store.getState().gameUsers.users;
-    const socket = new WebSocket("ws://localhost:9002/api/v1/ws");
-    const stompClient = Stomp.over(socket);
+
+    let webSocketUrl: string;
+    if (process.env.REACT_APP_WEBSOCKET_URL) {
+        webSocketUrl = process.env.REACT_APP_WEBSOCKET_URL
+    } else {
+        const url = new URL("ws", window.location.href);
+        url.protocol = url.protocol.replace("http", "ws");
+        webSocketUrl = url.href;
+    }
+
+    const stompClient = Stomp.client(webSocketUrl);
     stompClient.connect({}, () => {
         stompClient.subscribe(`/topic/game/${gameId}`, function (msg) {
             const gameEvent = JSON.parse(msg.body)
@@ -50,8 +59,8 @@ const connect = (gameId: string, store: MiddlewareAPI): CompatClient => {
                     store.dispatch(getGameActionSuccess(game));
 
                     store.dispatch(getGameUsersActionPending(users));
-                    UserApi.getUsers(game.users).then((users: User[]) => {
-                        store.dispatch(getGameUsersActionSuccess(users));
+                    UserApi.getUsers(game.players.map(p => p.userId)).then((resp: GetUsersResponse) => {
+                        store.dispatch(getGameUsersActionSuccess(resp.users));
                     }).catch((error: AxiosError) => store.dispatch(getGameUsersActionFailed(error.message)));
                 }).catch((error: AxiosError) => store.dispatch(getGameActionFailed(error.message)));
             }
