@@ -5,7 +5,6 @@ import {Game} from "model/game.model";
 import {AnyAction} from "redux";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {clearGameIdInLocalStorage, registerGameIdInLocalStorage} from "../service/local-storage";
-import {clearGameUsersAction} from "../slice/game-users.slice";
 import {connectAction} from "./event.actions";
 
 export enum GameActionType {
@@ -113,7 +112,6 @@ export const getGameActionFailed = (error: string): GetGameActionFailed => {
 export const createGameAction = (data: CreateGameData): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
         return new Promise<void>((resolve) => {
-            dispatch(clearGameUsersAction())
             clearGameIdInLocalStorage()
             dispatch(createGameActionPending());
             GameApi.createGame(data).then((game: Game) => {

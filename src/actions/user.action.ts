@@ -5,7 +5,7 @@ import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { ThunkAction } from "redux-thunk";
 import { registerAccessToken } from "service/local-storage";
-import {getGameUsersActionSuccess} from "../slice/game-users.slice";
+import {clearGameUsersAction, getGameUsersActionSuccess} from "../slice/game-users.slice";
 
 export enum UserActionType {
     GET_CURRENT_USER_PENDING = "GET_CURRENT_USER_PENDING",
@@ -87,6 +87,7 @@ export const createUserAction = (): ThunkAction<Promise<User>, {}, {}, AnyAction
 
             return UserApi.createUser().then((user: User) => {
                 dispatch(createUserActionSuccess(user));
+                dispatch(clearGameUsersAction())
                 dispatch(getGameUsersActionSuccess([user]));
                 registerAccessToken(user.accessToken);
                 resolve(user);

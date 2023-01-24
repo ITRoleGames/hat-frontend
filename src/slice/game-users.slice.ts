@@ -21,7 +21,7 @@ const gameUsersSlice = createSlice({
         },
         getGameUsersActionSuccess: (state: GameUsersState, action: PayloadAction<User[]>) => {
             state.loading = false
-            state.users = mergeUsers(state.users, action.payload)
+            state.users = mergeUsers(state.users, action.payload);
         },
         getGameUsersActionFailed: (state: GameUsersState, action: PayloadAction<string>) => {
             state.loading = false
@@ -33,10 +33,19 @@ const gameUsersSlice = createSlice({
     }
 })
 
-const mergeUsers = (firstUserList: User[], secondUserList: User[]): User[] => {
+const mergeUsers = (currentGameUsers: User[], updatedGameUsers: User[]): User[] => {
 
-    const firstUserListIds = firstUserList.map(u => u.id);
-    return [...firstUserList, ...secondUserList.filter((user) => firstUserListIds.indexOf(user.id) < 0)]
+    const result: User[] = [...currentGameUsers]
+    updatedGameUsers.forEach(updatedUser => {
+        const currentUserIndex = result.findIndex((user) => user.id == updatedUser.id);
+        if (currentUserIndex != -1) {
+            result[currentUserIndex] = {...updatedUser}
+        } else {
+            result.push(updatedUser)
+        }
+    })
+
+    return result
 }
 
 interface GameUsersState {
