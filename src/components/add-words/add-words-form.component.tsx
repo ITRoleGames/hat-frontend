@@ -27,7 +27,7 @@ function AddWordsForm({onFormSubmit, game, loading}: Props) {
         <div className="col-md-6 mx-auto">
             <form onSubmit={handleSubmit(onSubmit)} className="d-inline-block">
                 {
-                    Array.from({length: 1}).map((_, index: number) => {
+                    Array.from({length: game.wordsPerPlayer}).map((_, index: number) => {
                         return (
                             <div className="input-group has-validation mt-3" key={index}>
                                 <input

@@ -6,6 +6,7 @@
     "btn.share": "Поделиться",
     "btn.startRound": "Начать раунд",
     "btd.words.add": "Положить в шапку",
+    "btd.startGame": "Начать игру",
     "createGame.form.error.minWordsPerPlayer": "Минимально может быть {{min}} слово",
     "createGame.form.error.maxWordsPerPlayer": "Максимально может быть {{max}} слов",
     "createGame.form.error.minMoveTime": "Минимальное время {{min}} сек",
@@ -34,6 +35,7 @@
     "team.team" : "Команда",
     "team.wordsCount" : "Слова команды",
     "team.yourTeam" : "Ваша команда",
+    "team.itIsYou" : "Это Вы",
     "loading": "Загрузка..."
   }
 }

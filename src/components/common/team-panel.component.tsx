@@ -25,7 +25,14 @@ function TeamPanel({currentUserId, players, wordsCount, isCurrentUsersTeam, isTe
                                     <PlayerIcon playerStatus={player.status}/>
                                     <div className="align-self-center text-start ms-2">
                                         {player.name}
+                                        {
+                                            currentUserId == player.userId &&
+                                            <small className="text-primary">
+                                               &nbsp; {t("team.itIsYou")}
+                                            </small>
+                                        }
                                     </div>
+
                                 </div>
                             )
                         })}

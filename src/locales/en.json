@@ -6,6 +6,7 @@
     "btn.share": "Share",
     "btn.startRound": "Start round",
     "btn.words.add": "Put into the hat",
+    "btd.startGame": "Start the game",
     "createGame.form.error.minWordsPerPlayer": "Maximum number of words is {{min}}",
     "createGame.form.error.maxWordsPerPlayer": "Maximum number of words is {{max}}",
     "createGame.form.error.minTime": "Min time is  {{min}} sec",
@@ -34,6 +35,7 @@
     "team.team" : "Team",
     "team.wordsCount" : "Team's words",
     "team.yourTeam" : "Your team",
+    "team.itIsYou" : "It's you",
     "loading": "Loading..."
   }
 }

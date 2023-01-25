@@ -19,11 +19,13 @@ const GameStartedContainer: React.FC<Props> = ({gameState}) => {
         players: [
             {
                 id: "a11c0c04-b2a1-4dff-9bde-cf0772348783",
+                userId: currentUserId!!,
                 status: PlayerStatus.READY,
                 name: "Первый игрок"
             } as PlayerWithName,
             {
-                id: "a11c0c04-b2a1-4dff-9bde-cf0772348783",
+                id: "a11c0c04-b2a1-4dff-9bde-cf0772348784",
+                userId: "a29ee9ab-b98f-4fc7-9830-000e83430691",
                 status: PlayerStatus.READY,
                 name: "Второй игрок"
             } as PlayerWithName
@@ -40,6 +42,9 @@ const GameStartedContainer: React.FC<Props> = ({gameState}) => {
             <div className="px-4 text-center">
                 <h1 className="display-3 fw-bold"> {t("gameStarted.title")} </h1>
                 <div className="col-lg-3 col-md-5 mx-auto">
+                    <div className="alert alert-danger" role="alert">
+                        Это экран-заглушка!
+                    </div>
                     <GameStats wordsCount="80"/>
                     <WarningMessage message={t("game.youTurn")}/>
                     <TeamPanel {...teamPanelPros}/>

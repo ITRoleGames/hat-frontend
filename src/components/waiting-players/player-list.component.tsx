@@ -21,8 +21,7 @@ function PlayersList({payers = [], gameUsers}: Props) {
                 players.map(player => {
                     return <div key={player.id} className="d-flex flex-row justify-content-left mb-2">
                         <PlayerIcon playerStatus={player.status}/>
-                        <div
-                            className="align-self-center text-start ms-2"> {player.name}</div>
+                        <div className="align-self-center text-start ms-2"> {player.name}</div>
                     </div>
                 })
             }
