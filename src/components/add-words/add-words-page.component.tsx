@@ -9,12 +9,15 @@ import {AddWordsData} from "../../model/add-words-data.model";
 import AddWordsForm from "./add-words-form.component";
 import WordValues from "./add-words-form-data";
 import {useNavigate} from "react-router";
+import {Action} from "redux";
+import Loading from "../common/loading.component";
 
 
 const AddWordsPage: React.FC<AddWordsProps> = ({gameState, addWords}) => {
 
     const navigate = useNavigate();
     const {t} = useTranslation();
+    const {loading, game} = gameState;
 
     const handleFormSubmission = async (formData: WordValues) => {
         const words: string[] = [];
@@ -22,11 +25,12 @@ const AddWordsPage: React.FC<AddWordsProps> = ({gameState, addWords}) => {
             words.push(word.value)
         }
         const data: AddWordsData = {
-            gameId: gameState.game!!.id,
+            gameId: formData.gameId,
             words: words
         }
         addWords(data).then(() => navigate("/waitingPlayers"));
     };
+
 
     return (
         <>
@@ -34,7 +38,11 @@ const AddWordsPage: React.FC<AddWordsProps> = ({gameState, addWords}) => {
             <div className="px-4 text-center">
                 <h1>{t("addWords.title")}</h1>
                 <div>
-                    <AddWordsForm onFormSubmit={handleFormSubmission} game={gameState.game!!} loading={false}/>
+                    {loading ? (
+                        <Loading/>
+                    ) : (
+                        game && <AddWordsForm onFormSubmit={handleFormSubmission} game={game} loading={false}/>
+                    )}
                 </div>
             </div>
         </>
@@ -45,7 +53,7 @@ const mapStateToProps = (state: RootState) => ({
     gameState: state.game,
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
     addWords: async (data: AddWordsData) => await dispatch(addWordsAction(data)),
 });
 

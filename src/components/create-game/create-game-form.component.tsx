@@ -1,11 +1,10 @@
-import { FormData } from "components/create-game/create-game-form-data";
-import { Button } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import { SubmitHandler } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import {Button} from "react-bootstrap";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {useTranslation} from "react-i18next";
+import {CreateGameData} from "../../model/create-game-data.model";
 
 type Props = {
-    onFormSubmit: (data: FormData) => void;
+    onFormSubmit: (data: CreateGameData) => void;
     loading: boolean
 };
 
@@ -19,13 +18,13 @@ function CreateGameForm({ onFormSubmit, loading }: Props) {
         register,
         handleSubmit,
         formState: {errors},
-    } = useForm<FormData>({
+    } = useForm<CreateGameData>({
         mode: "onBlur",
-        defaultValues: { wordsPerPlayer: 10, moveTime: 30 },
+        defaultValues: { wordsPerPlayer: 10, moveTime: 30},
     });
 
     const { t } = useTranslation();
-    const onSubmit: SubmitHandler<FormData> = data => onFormSubmit(data);
+    const onSubmit: SubmitHandler<CreateGameData> = data => onFormSubmit(data);
 
     return (
         <div className="col-md-6 mx-auto">

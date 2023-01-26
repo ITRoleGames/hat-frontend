@@ -1,3 +1,5 @@
+import {Player} from "./player.model";
+
 export interface Game {
 
     /**
@@ -24,4 +26,9 @@ export interface Game {
      * Время хода в секундах
      */
     moveTimeInSec: number;
+
+    /**
+     * Игроки
+     */
+    players: Player[];
 }

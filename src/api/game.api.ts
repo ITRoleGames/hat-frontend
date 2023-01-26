@@ -22,6 +22,12 @@ export class GameApi {
         return response.data;
     };
 
+    static getGame = async (id: string): Promise<Game> => {
+
+        const response = await axios.get(`${ UrlUtils.API_V1 }/games/${id}`);
+        return response.data;
+    };
+
 }
 
 

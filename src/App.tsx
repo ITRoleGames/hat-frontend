@@ -6,22 +6,23 @@ import JoinGamePage from "components/join-game/join-game-page.component";
 import PageNotFound from "components/page-not-found.component";
 import PrivateRoute from "components/private-route";
 import React from "react";
-import { Routes } from "react-router";
-import { BrowserRouter, Route } from "react-router-dom";
+import {Routes} from "react-router";
+import {BrowserRouter, Route} from "react-router-dom";
 import "./App.css";
 import WaitingPlayersPage from "./components/waiting-players/waiting-players-page.component";
 
 function App() {
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={ <HomePage/> }/>
-                <Route path="/createGame" element={ <CreateGame/> }/>
-                <Route path="/joinGame" element={ <JoinGamePage/> }/>
-                <Route path="/gameCreated" element={ <PrivateRoute component={ GameCreatedPage }/> }/>
-                <Route path="/addWords" element={ <PrivateRoute component={ AddWordsPage }/> }/>
-                <Route path="/waitingPlayers" element={ <PrivateRoute component={ WaitingPlayersPage }/> }/>
-                <Route path="*" element={ <PageNotFound/> }>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/createGame" element={<CreateGame/>}/>
+                <Route path="/joinGame" element={<JoinGamePage/>}/>
+                <Route path="/gameCreated" element={<PrivateRoute component={GameCreatedPage}/>}/>
+                <Route path="/addWords" element={<PrivateRoute component={AddWordsPage}/>}/>
+                <Route path="/waitingPlayers" element={<PrivateRoute component={WaitingPlayersPage}/>}/>
+                <Route path="*" element={<PageNotFound/>}>
                 </Route>
             </Routes>
         </BrowserRouter>

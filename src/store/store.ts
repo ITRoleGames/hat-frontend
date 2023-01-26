@@ -1,13 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import reducers from "reducers/combine";
 import thunk from "redux-thunk";
-// // @ts-ignore
-// import untypedMiddleware from "untyped-middleware";
+import webSocketMiddleware from "../service/web-socket-middleware";
 
 export const store = configureStore({
     reducer: reducers,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().prepend(
             thunk,
-        ),
+        ).concat(webSocketMiddleware)
 });
