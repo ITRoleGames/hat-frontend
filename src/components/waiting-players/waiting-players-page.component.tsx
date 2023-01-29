@@ -8,6 +8,7 @@ import {Action} from "redux";
 import {getGameUsersAction} from "../../slice/game-users.slice";
 import {useEffect} from "react";
 import {Player} from "../../model/player.model";
+import {Link} from "react-router-dom";
 
 const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGameUsers}) => {
 
@@ -29,6 +30,9 @@ const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGame
             <div className="px-4 text-center">
                 <h1 className="display-5 fw-bold">{t("waitingPlayers.title")}</h1>
                 <PlayersList payers={players} gameUsers={gameUsersState.users}/>
+                <Link to="/castingOfLots" relative="path" className="btn btn-lg btn-primary">
+                    {t("waitingPlayers.btn.castingOfLots")}
+                </Link>
             </div>
         </>
     );
