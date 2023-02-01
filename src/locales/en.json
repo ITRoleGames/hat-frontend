@@ -6,7 +6,7 @@
     "btn.share": "Share",
     "btn.startRound": "Start round",
     "btn.words.add": "Put into the hat",
-    "btd.startGame": "Start the game",
+    "btn.createTeams": "Go to casting of lots",
     "createGame.form.error.minWordsPerPlayer": "Maximum number of words is {{min}}",
     "createGame.form.error.maxWordsPerPlayer": "Maximum number of words is {{max}}",
     "createGame.form.error.minTime": "Min time is  {{min}} sec",
@@ -32,15 +32,10 @@
     "gameStarted.title": "The game started!",
     "game.youTurn": "Attention! You turn to guess words!",
     "game.wordsCount": "Total words",
-    "team.team" : "Team",
-    "team.wordsCount" : "Team's words",
-    "team.yourTeam" : "Your team",
-    "team.itIsYou" : "It's you",
-    "loading": "Loading...",
-    "pageNotFound.warning": "Page not found",
-    "waitingPlayers.title": "Waiting for players",
-    "waitingPlayers.btn.castingOfLots": "Go to casting of lots",
-    "castingOfLots.title": "Casting of lots",
+    "team.team": "Team",
+    "team.wordsCount": "Team's words",
+    "team.yourTeam": "Your team",
+    "team.itIsYou": "It's you",
     "loading": "Loading..."
   }
 }

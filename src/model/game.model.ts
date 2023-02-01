@@ -31,4 +31,6 @@ export interface Game {
      * Игроки
      */
     players: Player[];
+
+    nextPlayerId: string;
 }

@@ -6,7 +6,7 @@
     "btn.share": "Поделиться",
     "btn.startRound": "Начать раунд",
     "btd.words.add": "Положить в шапку",
-    "btd.startGame": "Начать игру",
+    "btn.createTeams": "Перейти к жеребьёвке",
     "createGame.form.error.minWordsPerPlayer": "Минимально может быть {{min}} слово",
     "createGame.form.error.maxWordsPerPlayer": "Максимально может быть {{max}} слов",
     "createGame.form.error.minMoveTime": "Минимальное время {{min}} сек",
@@ -32,15 +32,10 @@
     "gameStarted.title": "Игра началась!",
     "game.youTurn": "Внимание! Ваша очередь загадывать слово!",
     "game.wordsCount": "Слов в шапке",
-    "team.team" : "Команда",
-    "team.wordsCount" : "Слова команды",
-    "team.yourTeam" : "Ваша команда",
-    "team.itIsYou" : "Это Вы",
-    "loading": "Загрузка...",
-    "pageNotFound.warning": "Страница не найдена",
-    "waitingPlayers.title": "Ожидание игроков",
-    "waitingPlayers.btn.castingOfLots": "Перейти к жеребьёвке",
-    "castingOfLots.title": "Жеребьёвка",
+    "team.team": "Команда",
+    "team.wordsCount": "Слова команды",
+    "team.yourTeam": "Ваша команда",
+    "team.itIsYou": "Это Вы",
     "loading": "Загрузка..."
   }
 }

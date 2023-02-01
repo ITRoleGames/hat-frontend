@@ -11,7 +11,7 @@ function TeamPanel({currentUserId, players, wordsCount, isCurrentUsersTeam, isTe
         <>
             <div className="d-flex flex-column m-2 p-2 bg-light rounded">
                 <div className="d-flex flex-row justify-content-between mb-2">
-                    <div>{t("team.team")} 1</div>
+                    <div>{t("team.team")} {players[0].teamId}</div>
                     <div className="flex-grow-1 text-start">
                         {isCurrentUsersTeam && <small className="text-primary">{t("team.yourTeam")}</small>}
                     </div>
