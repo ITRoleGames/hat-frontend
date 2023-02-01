@@ -12,6 +12,7 @@ import {
     getGameUsersActionSuccess
 } from "../slice/game-users.slice";
 import {GetUsersResponse} from "../dto/get-users-response";
+import {getAccessToken} from "./local-storage";
 
 const webSocketMiddleware: Middleware = store => {
 
@@ -49,8 +50,9 @@ const connect = (gameId: string, store: MiddlewareAPI): CompatClient => {
         webSocketUrl = url.href;
     }
 
-    const stompClient = Stomp.client(webSocketUrl);
-    stompClient.connect({}, () => {
+    const accessToken = getAccessToken();
+    const stompClient = Stomp.client(`${webSocketUrl}?token=${accessToken}`);
+    stompClient.connect({"X-Authorization": accessToken}, () => {
         stompClient.subscribe(`/topic/game/${gameId}`, function (msg) {
             const gameEvent = JSON.parse(msg.body)
             if (gameEvent.type == "GAME_UPDATED") {

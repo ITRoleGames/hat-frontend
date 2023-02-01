@@ -36,6 +36,11 @@
     "team.wordsCount" : "Слова команды",
     "team.yourTeam" : "Ваша команда",
     "team.itIsYou" : "Это Вы",
+    "loading": "Загрузка...",
+    "pageNotFound.warning": "Страница не найдена",
+    "waitingPlayers.title": "Ожидание игроков",
+    "waitingPlayers.btn.castingOfLots": "Перейти к жеребьёвке",
+    "castingOfLots.title": "Жеребьёвка",
     "loading": "Загрузка..."
   }
 }

@@ -36,6 +36,11 @@
     "team.wordsCount" : "Team's words",
     "team.yourTeam" : "Your team",
     "team.itIsYou" : "It's you",
+    "loading": "Loading...",
+    "pageNotFound.warning": "Page not found",
+    "waitingPlayers.title": "Waiting for players",
+    "waitingPlayers.btn.castingOfLots": "Go to casting of lots",
+    "castingOfLots.title": "Casting of lots",
     "loading": "Loading..."
   }
 }

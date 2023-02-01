@@ -31,6 +31,10 @@ const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGame
                 <h1 className="display-5 fw-bold">{t("waitingPlayers.title")}</h1>
                 <PlayersList payers={players} gameUsers={gameUsersState.users}/>
                 <Link to={ "/gameStarted" } className="btn btn-lg btn-primary">{ t("btd.startGame") }</Link>
+                return <div key={player.id} className="d-flex flex-row justify-content-left mb-2">
+                <PlayerIcon playerStatus={player.status}/>
+                <div className="align-self-center text-start ms-2"> {player.name}</div>
+            </div>
             </div>
         </>
     );
