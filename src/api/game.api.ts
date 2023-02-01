@@ -28,6 +28,12 @@ export class GameApi {
         return response.data;
     };
 
+    static startGame = async (id: string): Promise<Game> => {
+
+        const response = await axios.post(`${ UrlUtils.API_V1 }/games/${id}/startGame`);
+        return response.data;
+    };
+
 }
 
 

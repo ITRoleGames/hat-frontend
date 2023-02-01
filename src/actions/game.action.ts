@@ -17,6 +17,9 @@ export enum GameActionType {
     JOIN_GAME_SUCCESS = "JOIN_GAME_SUCCESS",
     JOIN_GAME_PENDING = "JOIN_GAME_PENDING",
     JOIN_GAME_FAILED = "JOIN_GAME_FAILED",
+    START_GAME_SUCCESS = "START_GAME_SUCCESS",
+    START_GAME_PENDING = "START_GAME_PENDING",
+    START_GAME_FAILED = "START_GAME_FAILED",
 }
 
 interface CreateGameActionSuccess {
@@ -62,6 +65,21 @@ interface GetGameActionFailed {
     error: string;
 }
 
+interface StartGameActionSuccess {
+    type: GameActionType.START_GAME_SUCCESS;
+    payload: Game;
+}
+
+interface StartGameActionPending {
+    type: GameActionType.START_GAME_PENDING;
+}
+
+interface StartGameActionFailed {
+    type: GameActionType.START_GAME_FAILED;
+    error: string;
+}
+
+
 export type GameAction =
     CreateGameActionPending
     | CreateGameActionSuccess
@@ -71,7 +89,10 @@ export type GameAction =
     | JoinGameActionFailed
     | GetGameActionPending
     | GetGameActionSuccess
-    | GetGameActionFailed;
+    | GetGameActionFailed
+    | StartGameActionPending
+    | StartGameActionSuccess
+    | StartGameActionFailed;
 
 export const createGameActionSuccess = (game: Game): CreateGameActionSuccess => {
     return {type: GameActionType.CREATE_GAME_SUCCESS, payload: game};
@@ -109,6 +130,17 @@ export const getGameActionFailed = (error: string): GetGameActionFailed => {
     return {type: GameActionType.GET_GAME_FAILED, error: error};
 };
 
+export const startGameActionSuccess = (game: Game): StartGameActionSuccess => {
+    return {type: GameActionType.START_GAME_SUCCESS, payload: game};
+};
+
+export const startGameActionPending = (): StartGameActionPending => {
+    return {type: GameActionType.START_GAME_PENDING};
+};
+
+export const startGameActionFailed = (error: string): StartGameActionFailed => {
+    return {type: GameActionType.START_GAME_FAILED, error: error};
+};
 export const createGameAction = (data: CreateGameData): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
         return new Promise<void>((resolve) => {
@@ -147,6 +179,18 @@ export const getGameAction = (gameId: string): ThunkAction<Promise<Game>, {}, {}
                 dispatch(getGameActionSuccess(game));
                 resolve(game);
             }).catch((error: AxiosError) => dispatch(getGameActionFailed(error.message)));
+        });
+    };
+};
+
+export const startGameAction = (gameId: string): ThunkAction<Promise<Game>, {}, {}, AnyAction> => {
+    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<Game> => {
+        return new Promise<Game>((resolve) => {
+            dispatch(startGameActionPending());
+            GameApi.startGame(gameId).then((game: Game) => {
+                dispatch(startGameActionSuccess(game));
+                resolve(game);
+            }).catch((error: AxiosError) => dispatch(startGameActionFailed(error.message)));
         });
     };
 };
