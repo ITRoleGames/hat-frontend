@@ -27,6 +27,8 @@
     "pageNotFound.btn.home": "На главную",
     "pageNotFound.warning": "Страница не найдена",
     "waitingPlayers.title": "Ожидание игроков",
+    "waitingPlayers.btn.castingOfLots": "Перейти к жеребьёвке",
+    "castingOfLots.title": "Жеребьёвка",
     "loading": "Загрузка..."
   }
 }

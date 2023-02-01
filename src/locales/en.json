@@ -27,6 +27,8 @@
     "pageNotFound.btn.home": "Go home",
     "pageNotFound.warning": "Page not found",
     "waitingPlayers.title": "Waiting for players",
+    "waitingPlayers.btn.castingOfLots": "Go to casting of lots",
+    "castingOfLots.title": "Casting of lots",
     "loading": "Loading..."
   }
 }
