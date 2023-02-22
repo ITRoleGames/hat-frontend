@@ -32,6 +32,7 @@ const webSocketMiddleware: Middleware = store => {
         const connecting = store.getState().eventState.connecting;
         const connected = store.getState().eventState.connected;
         const gameId = store.getState().game.game?.id;
+        const userId = store.getState().user.user?.id;
         if (
             gameId
             && !connected
@@ -40,7 +41,7 @@ const webSocketMiddleware: Middleware = store => {
             && action.type != EventActionType.CONNECTED
         ) {
             store.dispatch(connectingAction())
-            connect(gameId, store)
+            connect(gameId, userId, store)
         }
 
         next(action);
@@ -57,9 +58,10 @@ const rsocketUrl = () =>{
     }
 }
 
-const connect = (gameId: string, store: MiddlewareAPI) => {
+const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
 
     const users = store.getState().gameUsers.users;
+    const route = `/games/${gameId}/user/${userId}`;
 
     const client = new RSocketClient({
         serializers: {
@@ -97,7 +99,7 @@ const connect = (gameId: string, store: MiddlewareAPI) => {
     const requester = (reactiveSocket: ReactiveSocket<any, any>) => {
         const accessToken = getAccessToken();
         const metadata = new Metadata({
-            route: "event.stream",
+            route: route,
             auth: {type: "bearer", token: accessToken}
         }).toMetadata();
         reactiveSocket.requestStream({
