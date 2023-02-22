@@ -15,6 +15,7 @@
     "createGame.form.worldPerPlayer.label": "Words per player",
     "createGame.settings": "Setting",
     "createGame.title": "Create game",
+    "currentGame.code": "Current game code",
     "addWords.title": "Write down your words",
     "error.requiredField": "Required field",
     "gameCreated.code": "Security code",
@@ -36,6 +37,7 @@
     "team.wordsCount": "Team's words",
     "team.yourTeam": "Your team",
     "team.itIsYou": "It's you",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "codeCopiedToClipboard": "Code copied"
   }
 }

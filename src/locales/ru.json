@@ -15,6 +15,7 @@
     "createGame.form.worldPerPlayer.label": "Слов от участника",
     "createGame.settings": "Настройки",
     "createGame.title": "Создать игру",
+    "currentGame.code": "Код текущей игры",
     "addWords.title": "Придумайте слова",
     "error.requiredField": "Обязательное поле",
     "gameCreated.code": "Код для подключения",
@@ -36,6 +37,7 @@
     "team.wordsCount": "Слова команды",
     "team.yourTeam": "Ваша команда",
     "team.itIsYou": "Это Вы",
-    "loading": "Загрузка..."
+    "loading": "Загрузка...",
+    "codeCopiedToClipboard": "Код скопирован"
   }
 }
