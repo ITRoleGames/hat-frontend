@@ -11,20 +11,34 @@ import {Player} from "../../model/player.model";
 import {startGameAction} from "../../actions/game.action";
 import {useNavigate} from "react-router";
 import {Button} from "react-bootstrap";
+import {GameStatus} from "../../model/game-status";
+import {Game} from "../../model/game.model";
 
 const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGameUsers, startGame}) => {
 
     const {t} = useTranslation();
     const navigate = useNavigate();
     const players: Player[] = gameState?.game?.players ? gameState.game.players : []
+
+    const navigateToGameStartedPageIfGameStarted = (game: Game | undefined) => {
+        if (game?.status == GameStatus.STARTED) {
+            navigate("/gameStarted")
+        }
+    }
     useEffect(() => {
         if (gameState.loading || gameUsersState.loading) {
             return
         }
 
-        if (gameState.game && (gameState.game.players.length > gameUsersState.users.length)) {
-            getGameUsers(gameState.game.players.map(player => player.userId))
+        if (gameState.game && (gameState.game.players.length > gameUsersState.users.length)) { //todo: move into reducer or somewhere
+            getGameUsers(gameState.game.players.map(player => player.userId)).then(() => {
+                    navigateToGameStartedPageIfGameStarted(gameState.game)
+                }
+            )
+        } else {
+            navigateToGameStartedPageIfGameStarted(gameState.game)
         }
+
     }, [gameState])
 
     const handleStartGame = async (gameId: string) => {
@@ -32,15 +46,17 @@ const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, getGame
     };
 
     const gameId = gameState.game?.id;
+
+
     return (
         <>
             <Header/>
             <div className="px-4 text-center">
                 <h1 className="display-5 fw-bold">{t("waitingPlayers.title")}</h1>
                 <PlayersList payers={players} gameUsers={gameUsersState.users}/>
-                { gameId &&
+                {gameId &&
                     <Button onClick={() => handleStartGame(gameId)} className="btn btn-lg btn-primary">
-                        {t("btn.createTeams")}
+                        {t("btn.startGame")}
                     </Button>
                 }
 

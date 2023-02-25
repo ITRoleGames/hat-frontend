@@ -1,4 +1,5 @@
 import {Player} from "./player.model";
+import {GameStatus} from "./game-status";
 
 export interface Game {
 
@@ -32,5 +33,13 @@ export interface Game {
      */
     players: Player[];
 
-    nextPlayerId: string;
+    /**
+     * Общее количество слов в шапке
+     */
+    wordsCount: number;
+
+    /**
+     * Статус игры
+     */
+    status: GameStatus;
 }
