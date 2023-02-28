@@ -2,10 +2,15 @@ import {Middleware, MiddlewareAPI} from "redux"
 import {connectingAction, EventActionType} from "../actions/event.actions";
 import {
     BufferEncoders,
+    encodeBearerAuthMetadata,
+    encodeCompositeMetadata,
+    encodeRoute,
     IdentitySerializer,
     JsonSerializer,
     MAX_STREAM_ID,
+    MESSAGE_RSOCKET_AUTHENTICATION,
     MESSAGE_RSOCKET_COMPOSITE_METADATA,
+    MESSAGE_RSOCKET_ROUTING,
     RSocketClient
 } from "rsocket-core";
 import RSocketWebSocketClient from "rsocket-websocket-client";
@@ -21,7 +26,6 @@ import {
     getGameUsersActionPending,
     getGameUsersActionSuccess
 } from "../slice/game-users.slice";
-import Metadata from "./metadata";
 import {GetUsersResponse} from "../dto/get-users-response";
 import {getAccessToken} from "./local-storage";
 
@@ -48,7 +52,7 @@ const webSocketMiddleware: Middleware = store => {
     }
 }
 
-const rsocketUrl = () =>{
+const rsocketUrl = () => {
     if (process.env.REACT_APP_WEBSOCKET_URL) {
         return process.env.REACT_APP_WEBSOCKET_URL
     } else {
@@ -62,7 +66,8 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
 
     const users = store.getState().gameUsers.users;
     const route = `/games/${gameId}/user/${userId}`;
-
+    const accessToken = getAccessToken();
+    if (accessToken == null) return
     const client = new RSocketClient({
         serializers: {
             data: JsonSerializer,
@@ -72,7 +77,13 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
             keepAlive: 60000,
             lifetime: 180000,
             dataMimeType: "application/json",
-            metadataMimeType:  MESSAGE_RSOCKET_COMPOSITE_METADATA.string
+            metadataMimeType: MESSAGE_RSOCKET_COMPOSITE_METADATA.string,
+            payload: {
+                metadata: encodeCompositeMetadata([
+                    [MESSAGE_RSOCKET_ROUTING, encodeRoute(route)],
+                    [MESSAGE_RSOCKET_AUTHENTICATION, encodeBearerAuthMetadata(accessToken)],
+                ])
+            }
         },
         transport: new RSocketWebSocketClient({
             url: rsocketUrl()
@@ -83,7 +94,7 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
 
     const responseHandler = (payload: any) => {
         const gameEvent = payload.data
-        if (gameEvent.type == "GAME_UPDATED") {
+        if (gameEvent.type == "GAME_UPDATED" && gameEvent.actorUserId != userId) {
             store.dispatch(getGameActionPending());
             GameApi.getGame(gameId).then((game: Game) => {
                 store.dispatch(getGameActionSuccess(game));
@@ -97,13 +108,10 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
     }
 
     const requester = (reactiveSocket: ReactiveSocket<any, any>) => {
-        const accessToken = getAccessToken();
-        const metadata = new Metadata({
-            route: route,
-            auth: {type: "bearer", token: accessToken}
-        }).toMetadata();
         reactiveSocket.requestStream({
-            metadata
+            metadata: encodeCompositeMetadata([
+                [MESSAGE_RSOCKET_ROUTING, encodeRoute(route)]
+            ])
         }).subscribe({
             onError: errorHandler,
             onNext: responseHandler,
@@ -111,7 +119,9 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
                 console.log("RSocket subscribed.");
                 subscription.request(MAX_STREAM_ID);
             },
-            onComplete: () => {console.log("RSocket subscription complete.")}
+            onComplete: () => {
+                console.log("RSocket subscription complete.")
+            }
         })
     }
 
