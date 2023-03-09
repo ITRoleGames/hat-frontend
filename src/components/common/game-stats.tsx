@@ -10,7 +10,7 @@ function GameStats({wordsCount}: Props) {
 }
 
 type Props = {
-    wordsCount: string
+    wordsCount: number
 };
 
 export default GameStats;

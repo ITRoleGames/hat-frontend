@@ -5,8 +5,8 @@ export interface Player {
     id: string,
     userId: string
     status: PlayerStatus,
-    order: number,
-    teamId: string,
+    moveOrder: number,
+    teamId: number,
     role: PlayerRole
 
 }
