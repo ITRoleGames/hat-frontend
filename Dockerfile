@@ -1,8 +1,10 @@
 #stage1
 FROM node:16-alpine as builder
+RUN apk --no-cache add git
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
+COPY .git/ ./.git/
 RUN npm install
 # Build the project and copy the files
 COPY ./ /app/
