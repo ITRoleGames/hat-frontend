@@ -40,6 +40,7 @@
     "team.playing": "Team paying",
     "team.itIsYou": "It's you",
     "loading": "Loading...",
-    "codeCopiedToClipboard": "Code copied"
+    "codeCopiedToClipboard": "Code copied",
+    "codeCopyError": "Copy error occurred. Try to copy manually."
   }
 }
