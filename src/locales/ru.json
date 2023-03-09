@@ -40,6 +40,7 @@
     "team.playing": "Команда играет",
     "team.itIsYou": "Это Вы",
     "loading": "Загрузка...",
-    "codeCopiedToClipboard": "Код скопирован"
+    "codeCopiedToClipboard": "Код скопирован",
+    "codeCopyError": "Ошибка копирования кода. Попробуйте скопировать вручную."
   }
 }
