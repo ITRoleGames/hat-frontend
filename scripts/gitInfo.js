@@ -14,7 +14,7 @@ const execSyncWrapper = (command) => {
 
 const main = () => {
     let gitVersion = execSyncWrapper('git describe --tags --always --first-parent');
-    let isDirty = execSyncWrapper('git diff --quiet || echo \'dirty\'') != "dirty"
+    let isDirty = execSyncWrapper('git diff --quiet || echo \'dirty\'') === "dirty"
 
     const obj = {
         gitVersion,
