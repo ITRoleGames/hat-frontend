@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "reducers/combine";
 
-const Header: React.FC<HeaderProps> = ({ userState }) => {
+const Header: React.FC<HeaderProps> = ({ userState, gameState }) => {
 
     const { t } = useTranslation();
     const userName = userState.user?.name ? userState.user?.name : t("header.unknownRacoon");
@@ -22,7 +22,8 @@ const Header: React.FC<HeaderProps> = ({ userState }) => {
                     </Nav>
                     <Nav>
                         <div>
-                            { t("header.hello") }, {userName}
+                            { t("header.hello") }, {userName}. &nbsp;
+                            {gameState.game && <span>{t("currentGame.code")}: {gameState.game.code} </span>}
                         </div>
                     </Nav>
                 </Navbar.Collapse>
@@ -33,6 +34,7 @@ const Header: React.FC<HeaderProps> = ({ userState }) => {
 
 const mapStateToProps = (state: RootState) => ({
     userState: state.user,
+    gameState: state.game,
 });
 
 type HeaderProps = ConnectedProps<typeof connector>;

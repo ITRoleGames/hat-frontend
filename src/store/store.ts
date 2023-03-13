@@ -10,3 +10,6 @@ export const store = configureStore({
             thunk,
         ).concat(webSocketMiddleware)
 });
+
+
+export type RootState = ReturnType<typeof store.getState>

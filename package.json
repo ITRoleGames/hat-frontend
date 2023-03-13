@@ -44,11 +44,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env DANGEROUSLY_DISABLE_HOST_CHECK=true PORT=8999 REACT_APP_WEBSOCKET_URL=ws://localhost:9003/rsocket react-scripts start",
-    "build": "react-scripts build",
+    "start": "npm run git-info && cross-env DANGEROUSLY_DISABLE_HOST_CHECK=true PORT=8999 REACT_APP_WEBSOCKET_URL=ws://localhost:9003/rsocket react-scripts start",
+    "build": "npm run git-info && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ignore-path .eslintignore --ext .ts,tsx ."
+    "lint": "eslint --ignore-path .eslintignore --ext .ts,tsx .",
+    "git-info": "node scripts/gitInfo.js"
   },
   "eslintConfig": {
     "extends": [

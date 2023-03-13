@@ -5,6 +5,7 @@ target/
 !**/src/test/**
 *.log
 *.gz
+generatedGitInfo.json
 
 ### STS ###
 .apt_generated

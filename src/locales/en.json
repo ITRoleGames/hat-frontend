@@ -6,7 +6,7 @@
     "btn.share": "Share",
     "btn.startRound": "Start round",
     "btn.words.add": "Put into the hat",
-    "btn.createTeams": "Go to casting of lots",
+    "btn.startGame": "Go to casting of lots",
     "createGame.form.error.minWordsPerPlayer": "Maximum number of words is {{min}}",
     "createGame.form.error.maxWordsPerPlayer": "Maximum number of words is {{max}}",
     "createGame.form.error.minTime": "Min time is  {{min}} sec",
@@ -15,6 +15,7 @@
     "createGame.form.worldPerPlayer.label": "Words per player",
     "createGame.settings": "Setting",
     "createGame.title": "Create game",
+    "currentGame.code": "Current game code",
     "addWords.title": "Write down your words",
     "error.requiredField": "Required field",
     "gameCreated.code": "Security code",
@@ -30,12 +31,16 @@
     "pageNotFound.warning": "Page not found",
     "waitingPlayers.title": "Waiting for players",
     "gameStarted.title": "The game started!",
-    "game.youTurn": "Attention! You turn to guess words!",
+    "game.youTurnToExplain": "Attention! You turn to explain words!",
+    "game.youTurnToGuess": "Attention! You turn to guess words!",
     "game.wordsCount": "Total words",
     "team.team": "Team",
     "team.wordsCount": "Team's words",
     "team.yourTeam": "Your team",
+    "team.playing": "Team paying",
     "team.itIsYou": "It's you",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "codeCopiedToClipboard": "Code copied",
+    "codeCopyError": "Copy error occurred. Try to copy manually."
   }
 }
