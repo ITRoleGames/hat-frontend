@@ -26,7 +26,7 @@ export interface Game {
     /**
      * Время хода в секундах
      */
-    moveTimeInSec: number;
+    moveTime: number;
 
     /**
      * Игроки

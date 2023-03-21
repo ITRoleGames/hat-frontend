@@ -6,5 +6,7 @@ export interface TeamPanelProps {
     wordsCount: number,
     isCurrentUsersTeam: boolean,
     isTeamPlaying: boolean,
-    roundTime: number
+    nextMoveOrder: number,
+    roundTime: number,
+    currentRoundStartTime: Date | undefined
 }

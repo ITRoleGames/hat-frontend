@@ -41,6 +41,9 @@
     "team.itIsYou": "Это Вы",
     "loading": "Загрузка...",
     "codeCopiedToClipboard": "Код скопирован",
-    "codeCopyError": "Ошибка копирования кода. Попробуйте скопировать вручную."
+    "codeCopyError": "Ошибка копирования кода. Попробуйте скопировать вручную.",
+    "round.youExplain" : "Вы объясняете слово",
+    "round.youGuess": "Вы угадываете слово",
+    "round.guessed": "Угадал"
   }
 }

@@ -5,8 +5,11 @@ import TeamPanel from "./team-panel.component";
 import {User} from "../../model/user.model";
 import {PlayerWithName} from "../../dto/player-with-name";
 import {TeamPanelProps} from "../../dto/team-panel-props";
+import {logInfo} from "../../utils/logging.utils";
+import {Round} from "../../model/round.model";
+import {RoundStatus} from "../../model/round-status";
 
-function TeamList({game, currentUser, gameUsers}: Props) {
+function TeamList({game,currentRound, currentUser, gameUsers, startRound}: Props) {
 
     const players = game.players;
 
@@ -27,18 +30,32 @@ function TeamList({game, currentUser, gameUsers}: Props) {
         teamId: string
     ): TeamPanelProps => {
         const players: PlayerWithName[] = playersGroupedByTeam[teamId]
-        const nextPlayerId = game.players.find((player: Player) => player.moveOrder == 0)?.id
-        const isCurrentUser = players.findIndex((player) => player.userId == currentUser.id) != -1
-        const isCurrentUserTurn = players.findIndex((player: Player) => player.id == nextPlayerId) != -1
+        const nextPlayer = game.players.find((player: Player) => player.moveOrder == 0);
+        const nextTeamId = nextPlayer?.teamId;
+        const isTeamPlaying = players[0].teamId == nextTeamId
+        const isCurrentUsersTeam = players.findIndex((player) => player.userId == currentUser.id) != -1;
 
+        let currentRoundStartTime;
+        if(currentRound && currentRound.status == RoundStatus.STARTED){
+            currentRoundStartTime = currentRound.startTime;
+        }
+
+        // console.log(`game.moveTimeInSec : ${game.moveTime}`)
         return {
             currentUserId: currentUser.id,
             players: players,
             wordsCount: 0,
-            isCurrentUsersTeam: isCurrentUser,
-            isTeamPlaying: isCurrentUserTurn,
-            roundTime: 30
+            isCurrentUsersTeam: isCurrentUsersTeam,
+            isTeamPlaying: isTeamPlaying,
+            nextMoveOrder: 0,
+            roundTime: game.moveTime,
+            currentRoundStartTime: currentRoundStartTime
         }
+    }
+
+    const handleStartRound  = () => {
+        logInfo("call start round from team list")
+        startRound(game.id)
     }
 
     return (
@@ -52,10 +69,10 @@ function TeamList({game, currentUser, gameUsers}: Props) {
                         key
                     )
                     return (
-                        <>
+                        <div key={key}>
                             <TeamWarning game={game} {...teamProps}/>
-                            <TeamPanel {...teamProps}/>
-                        </>
+                            <TeamPanel {...teamProps} startRound={handleStartRound}/>
+                        </div>
                     )
                 })
             }
@@ -74,8 +91,10 @@ function groupBy<T>(arr: T[], fn: (item: T) => any): Record<string, T[]> {
 
 type Props = {
     game: Game,
+    currentRound: Round | undefined,
     currentUser: User,
-    gameUsers: User[]
+    gameUsers: User[],
+    startRound: (gameId: string) => any
 };
 
 

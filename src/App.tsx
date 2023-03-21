@@ -9,8 +9,10 @@ import React from "react";
 import {Routes} from "react-router";
 import {BrowserRouter, Route} from "react-router-dom";
 import "./App.css";
-import WaitingPlayersPage from "./components/waiting-players/waiting-players-page.component";
-import GameStartedContainer from "./containers/game-started-container";
+import WaitingPlayersPage from "./containers/waiting-players.container";
+import GameStartedContainer from "./containers/game-started.container";
+import ExplainContainer from "./containers/explain.container";
+import GuessContainer from "./containers/guess.container";
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
                 <Route path="/addWords" element={<PrivateRoute component={AddWordsPage}/>}/>
                 <Route path="/waitingPlayers" element={<PrivateRoute component={WaitingPlayersPage}/>}/>
                 <Route path="/gameStarted" element={<PrivateRoute component={GameStartedContainer}/>}/>
+                <Route path="/explain" element={<PrivateRoute component={ExplainContainer}/>}/>
+                <Route path="/guess" element={<PrivateRoute component={GuessContainer}/>}/>
                 <Route path="*" element={<PageNotFound/>}>
                 </Route>
             </Routes>

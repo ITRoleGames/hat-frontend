@@ -28,6 +28,16 @@ import {
 } from "../slice/game-users.slice";
 import {GetUsersResponse} from "../dto/get-users-response";
 import {getAccessToken} from "./local-storage";
+import {GameStatus} from "../model/game-status";
+import {RoundApi} from "../api/round.api";
+import {Round} from "../model/round.model";
+import {
+    getCurrentRoundAction,
+    getLatestRoundActionFailed,
+    getLatestRoundActionPending,
+    getLatestRoundActionSuccess
+} from "../slice/round.slice";
+import {logInfo} from "../utils/logging.utils";
 
 const webSocketMiddleware: Middleware = store => {
 
@@ -93,17 +103,33 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
     const errorHandler = (e: any) => console.error(e);
 
     const responseHandler = (payload: any) => {
+        logInfo("new WS event")
         const gameEvent = payload.data
         if (gameEvent.type == "GAME_UPDATED" && gameEvent.actorUserId != userId) {
-            store.dispatch(getGameActionPending());
-            GameApi.getGame(gameId).then((game: Game) => {
-                store.dispatch(getGameActionSuccess(game));
 
-                store.dispatch(getGameUsersActionPending(users));
-                UserApi.getUsers(game.players.map(p => p.userId)).then((resp: GetUsersResponse) => {
-                    store.dispatch(getGameUsersActionSuccess(resp.users));
-                }).catch((error: AxiosError) => store.dispatch(getGameUsersActionFailed(error.message)));
-            }).catch((error: AxiosError) => store.dispatch(getGameActionFailed(error.message)));
+            //если игра обновилась нужно запросить
+            if(store.getState().game.status == GameStatus.STARTED){
+                logInfo("game started")
+                store.dispatch(getLatestRoundActionPending());
+                RoundApi.getLatestRound(store.getState().game.id).then((resp: Round | undefined) => {
+                    if(resp){
+                        store.dispatch(getLatestRoundActionSuccess(resp));
+                    }else{
+                        store.dispatch(getLatestRoundActionFailed("not found"));
+                    }
+
+                }).catch((error: AxiosError) => store.dispatch(getLatestRoundActionFailed(error.message)));
+            }else {
+                logInfo("Requesting updated game data")
+                store.dispatch(getGameActionPending());
+                GameApi.getGame(gameId).then((game: Game) => {
+                    store.dispatch(getGameActionSuccess(game));
+                    store.dispatch(getGameUsersActionPending(users));
+                    UserApi.getUsers(game.players.map(p => p.userId)).then((resp: GetUsersResponse) => {
+                        store.dispatch(getGameUsersActionSuccess(resp.users));
+                    }).catch((error: AxiosError) => store.dispatch(getGameUsersActionFailed(error.message)));
+                }).catch((error: AxiosError) => store.dispatch(getGameActionFailed(error.message)));
+            }
         }
     }
 
