@@ -27,7 +27,7 @@ const GameStartedContainer: React.FC<Props> = ({
     const navigate = useNavigate();
 
     const {round: currentRound, loading: currentRoundLoading, error: currentRoundError} = currentRoundState;
-    const {user, loading: userLoading} = userState;
+    const {user} = userState;
     const {game, loading: gameLoading} = gameState;
     const {users, loading: usersLoading} = gameUsersState;
 
@@ -56,7 +56,7 @@ const GameStartedContainer: React.FC<Props> = ({
 
         if (currentRound && !currentRoundLoading && !currentRoundError) {
             // logInfo("current round loaded")
-            const currentPlayer = game.players.find(player => player.userId == userState.user?.id);
+            const currentPlayer = game.players.find(player => player.userId == user?.id);
             const explainerId = currentRound.explainerId;
             if (!currentPlayer) {
                 console.error("Current player not found")
@@ -96,15 +96,15 @@ const GameStartedContainer: React.FC<Props> = ({
             <div className="px-1 px-lg-4 text-center">
                 <h1 className="display-3 fw-bold"> {t("gameStarted.title")} </h1>
                 <div className="col-lg-3 col-md-5 mx-auto">
-                    {gameState.loading && <Loading/>}
-                    {gameState.game && userState.user != null &&
+                    {gameLoading && <Loading/>}
+                    {game && user &&
                         <>
-                            <GameStats wordsCount={gameState.game.wordsCount}/>
+                            <GameStats wordsCount={game.wordsCount}/>
                             <TeamList
-                                game={gameState.game}
-                                currentRound={currentRoundState.round}
-                                currentUser={userState.user}
-                                gameUsers={gameUsersState.users}
+                                game={game}
+                                currentRound={currentRound}
+                                currentUser={user}
+                                gameUsers={users}
                                 startRound={handleStartRound}
                             />
                         </>
