@@ -1,5 +1,5 @@
 import {Middleware, MiddlewareAPI} from "redux"
-import {connectingAction, EventActionType} from "../actions/event.actions";
+import {connectedAction, connectingAction, EventActionType} from "../actions/event.actions";
 import {
     BufferEncoders,
     encodeBearerAuthMetadata,
@@ -32,7 +32,6 @@ import {GameStatus} from "../model/game-status";
 import {RoundApi} from "../api/round.api";
 import {Round} from "../model/round.model";
 import {
-    getCurrentRoundAction,
     getLatestRoundActionFailed,
     getLatestRoundActionPending,
     getLatestRoundActionSuccess
@@ -107,20 +106,19 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
         const gameEvent = payload.data
         if (gameEvent.type == "GAME_UPDATED" && gameEvent.actorUserId != userId) {
 
-            //если игра обновилась нужно запросить
-            if(store.getState().game.status == GameStatus.STARTED){
+            const gameState = store.getState().game;
+            if(gameState.game.status == GameStatus.STARTED){
                 logInfo("game started")
                 store.dispatch(getLatestRoundActionPending());
-                RoundApi.getLatestRound(store.getState().game.id).then((resp: Round | undefined) => {
-                    if(resp){
+                RoundApi.getLatestRound(gameState.game.id).then((resp: Round | undefined) => {
+                    if (resp) {
                         store.dispatch(getLatestRoundActionSuccess(resp));
-                    }else{
+                    } else {
                         store.dispatch(getLatestRoundActionFailed("not found"));
                     }
 
                 }).catch((error: AxiosError) => store.dispatch(getLatestRoundActionFailed(error.message)));
             }else {
-                logInfo("Requesting updated game data")
                 store.dispatch(getGameActionPending());
                 GameApi.getGame(gameId).then((game: Game) => {
                     store.dispatch(getGameActionSuccess(game));
@@ -142,11 +140,12 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
             onError: errorHandler,
             onNext: responseHandler,
             onSubscribe: (subscription: ISubscription) => {
-                console.log("RSocket subscribed.");
+                console.log("RSocket connection established");
+                store.dispatch(connectedAction())
                 subscription.request(MAX_STREAM_ID);
             },
             onComplete: () => {
-                console.log("RSocket subscription complete.")
+                console.log("RSocket subscription complete")
             }
         })
     }

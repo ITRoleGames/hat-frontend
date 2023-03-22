@@ -21,7 +21,8 @@ const eventReducer = (state: EventState = initialState, action: EventAction): Ev
         case EventActionType.CONNECTED:
             return {
                 ...state,
-                connected: true
+                connected: true,
+                connecting: false
             };
         default:
             return state;
