@@ -3,34 +3,37 @@ import {PlayerWithName} from "../../dto/player-with-name";
 import PlayerIcon from "./payer-icon";
 import {Button} from "react-bootstrap";
 import RoundTimer from "./timer.component";
+import {RoundStatus} from "../../model/round-status";
 
 function TeamPanel({
                        currentUserId,
                        players,
                        wordsCount,
                        isCurrentUsersTeam,
-                       isTeamPlaying,
+                       isTeamPlayingNext,
                        nextMoveOrder,
                        roundTime,
                        currentRoundStartTime,
+                       currentRoundStatus,
                        startRound
                    }: Props) {
 
     const {t} = useTranslation();
-    const backgroundColor = isTeamPlaying ? "bg-secondary bg-opacity-10" : ""
+    const backgroundColor = isTeamPlayingNext ? "bg-secondary bg-opacity-10" : ""
 
     const currentPlayer: PlayerWithName | undefined = players.find(p => p.userId == currentUserId);
 
-    const isCurrentUserMove = currentPlayer?.moveOrder == nextMoveOrder
+    const isCurrentUserMove = currentPlayer?.moveOrder == nextMoveOrder && currentRoundStatus != RoundStatus.STARTED
+
     return (
         <>
             <div
-                className={`d-flex flex-column m-lg-2 p-1 p-lg-2 rounded border border-opacity-50 border-secondary ${backgroundColor}`}>
+                className={`d-flex flex-column m-lg-2 mb-2 p-1 p-lg-2 rounded border border-opacity-50 border-secondary ${backgroundColor}`}>
                 <div className="d-flex flex-row justify-content-between mb-2">
                     <div>{t("team.team")} {players[0].teamId + 1}</div>
                     <div className="flex-grow-1 text-start">
                         {isCurrentUsersTeam && <small className="text-primary">&nbsp;{t("team.yourTeam")}</small>}
-                        {(!isCurrentUsersTeam && isTeamPlaying) &&
+                        {(!isCurrentUsersTeam && isTeamPlayingNext) &&
                             <small className="text-danger">&nbsp;{t("team.playing")}</small>
                         }
                     </div>
@@ -60,13 +63,13 @@ function TeamPanel({
                         {wordsCount > 0 ? wordsCount : "---"}
                     </div>
                 </div>
-                {isTeamPlaying &&
+                {isTeamPlayingNext &&
                     <div className="d-flex flex-row align-items-center">
                         <div className="d-flex flex-column flex-grow-1">
                             {currentRoundStartTime &&
                                 <RoundTimer
-                                seconds={roundTime}
-                                onComplete={() => console.log("round completed")}
+                                    seconds={roundTime}
+                                    onComplete={() => console.log("round completed")}
                                 />
                             }
                             {!currentRoundStartTime &&
@@ -80,10 +83,12 @@ function TeamPanel({
                 }
             </div>
             {
-                (isCurrentUsersTeam && isTeamPlaying && isCurrentUserMove) &&
-                <Button variant="primary" size="lg" onClick={() => startRound()}>
-                    {t("btn.startRound")}
-                </Button>
+                (isCurrentUsersTeam && isTeamPlayingNext && isCurrentUserMove) &&
+                <div className="pb-2">
+                    <Button variant="primary" size="lg" onClick={() => startRound()}>
+                        {t("btn.startRound")}
+                    </Button>
+                </div>
             }
         </>
     )
@@ -94,10 +99,11 @@ type Props = {
     players: PlayerWithName[],
     wordsCount: number,
     isCurrentUsersTeam: boolean,
-    isTeamPlaying: boolean,
+    isTeamPlayingNext: boolean,
     nextMoveOrder: number,
     roundTime: number,
     currentRoundStartTime: string | undefined,
+    currentRoundStatus: RoundStatus | undefined,
     startRound: () => any
 };
 

@@ -36,7 +36,7 @@ import {
     getLatestRoundActionPending,
     getLatestRoundActionSuccess
 } from "../slice/round.slice";
-import {logInfo} from "../utils/logging.utils";
+import {logError, logInfo} from "../utils/logging.utils";
 
 const webSocketMiddleware: Middleware = store => {
 
@@ -102,13 +102,12 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
     const errorHandler = (e: any) => console.error(e);
 
     const responseHandler = (payload: any) => {
-        logInfo("new WS event")
+        logInfo("New WS event received")
         const gameEvent = payload.data
         if (gameEvent.type == "GAME_UPDATED" && gameEvent.actorUserId != userId) {
 
             const gameState = store.getState().game;
             if(gameState.game.status == GameStatus.STARTED){
-                logInfo("game started")
                 store.dispatch(getLatestRoundActionPending());
                 RoundApi.getLatestRound(gameState.game.id).then((resp: Round | undefined) => {
                     if (resp) {
@@ -116,7 +115,6 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
                     } else {
                         store.dispatch(getLatestRoundActionFailed("not found"));
                     }
-
                 }).catch((error: AxiosError) => store.dispatch(getLatestRoundActionFailed(error.message)));
             }else {
                 store.dispatch(getGameActionPending());
