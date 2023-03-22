@@ -11,7 +11,6 @@ import GameStats from "../components/common/game-stats";
 import TeamList from "../components/common/team-list";
 import {getCurrentRoundAction, startRoundAction} from "../slice/round.slice";
 import {useNavigate} from "react-router";
-import {logInfo} from "../utils/logging.utils";
 import {RoundStatus} from "../model/round-status";
 
 const GameStartedContainer: React.FC<Props> = ({
@@ -27,32 +26,38 @@ const GameStartedContainer: React.FC<Props> = ({
     const {t} = useTranslation();
     const navigate = useNavigate();
 
+    const {round: currentRound, loading: currentRoundLoading, error: currentRoundError} = currentRoundState;
+    const {user, loading: userLoading} = userState;
+    const {game, loading: gameLoading} = gameState;
+    const {users, loading: usersLoading} = gameUsersState;
+
     useEffect(() => {
-        if (gameState.loading || gameUsersState.loading) {
+        if (gameLoading || usersLoading) {
             return
         }
 
-        if (gameState.game && (gameState.game.players.length > gameUsersState.users.length)) {
-            getGameUsers(gameState.game.players.map(player => player.userId))
+        if (game && (game.players.length > users.length)) {
+            getGameUsers(game.players.map(player => player.userId))
         }
     }, [gameState])
 
+
     useEffect(() => {
-        logInfo("round effect")
-        if (!gameState.game || currentRoundState.loading) {
+        if (game && !currentRound && !currentRoundLoading && !currentRoundError) {
+            getCurrentRound(game.id)
+            return;
+        }
+    }, [currentRoundState, gameState])
+
+    useEffect(() => {
+        if (!game || !currentRound || currentRoundLoading) {
             return;
         }
 
-        if (gameState.game && !currentRoundState.round && !currentRoundState.loading && !currentRoundState.error) {
-            logInfo("current round loading")
-            getCurrentRound(gameState.game.id)
-            return;
-        }
-
-        if (currentRoundState.round && !currentRoundState.loading && !currentRoundState.error) {
-            logInfo("current round loaded")
-            const currentPlayer = gameState.game.players.find(player => player.userId == userState.user?.id);
-            const explainerId = currentRoundState.round.explainerId;
+        if (currentRound && !currentRoundLoading && !currentRoundError) {
+            // logInfo("current round loaded")
+            const currentPlayer = game.players.find(player => player.userId == userState.user?.id);
+            const explainerId = currentRound.explainerId;
             if (!currentPlayer) {
                 console.error("Current player not found")
                 return;
@@ -61,20 +66,17 @@ const GameStartedContainer: React.FC<Props> = ({
                 return;
             }
 
-            const currentExplainer = gameState.game.players.find(player => player.id = explainerId);
+            const currentExplainer = game.players.find(player => player.id == explainerId);
 
             if (!currentExplainer) {
                 console.error("Current explainer not found")
                 return;
             }
 
-            if (gameState.game
-                && currentRoundState.round
-                && currentRoundState.round.status == RoundStatus.STARTED
+            if (currentRound.status == RoundStatus.STARTED
                 && currentExplainer.userId != currentPlayer?.userId
                 && currentExplainer.teamId == currentPlayer?.teamId
             ) {
-                console.log("navigate to guess")
                 navigate("/guess")
             }
         }
@@ -83,7 +85,6 @@ const GameStartedContainer: React.FC<Props> = ({
 
 
     const handleStartRound = (gameId: string) => {
-        console.log("handleStartRound")
         startRound(gameId).then(() => {
             navigate("/explain")
         })

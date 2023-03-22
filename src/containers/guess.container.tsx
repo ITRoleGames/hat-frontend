@@ -8,26 +8,68 @@ import RoundTimer from "../components/common/timer.component";
 import Loading from "../components/common/loading.component";
 import {useNavigate} from "react-router";
 import {getCurrentRoundAction} from "../slice/round.slice";
-import {useEffect} from "react";
+import {useEffect, useRef, useState} from "react";
+import {RoundStatus} from "../model/round-status";
+import {calculateRoundTime} from "../utils/time-util";
 
-const GuessContainer: React.FC<Props> = ({userState, gameState, gameUsersState,currentRoundState,getCurrentRound}) => {
-
+const GuessContainer: React.FC<Props> = ({
+                                             userState,
+                                             gameState,
+                                             gameUsersState,
+                                             currentRoundState,
+                                             getCurrentRound
+                                         }) => {
     const {t} = useTranslation();
     const navigate = useNavigate();
+    const refTimer = useRef<number | null>(null);
+    const [roundActive, setRoundActive] = useState(true);
+
+    const {game, loading: gameLoading} = gameState;
+    const {round: currentRound, loading: currentRoundLoading} = currentRoundState;
 
     useEffect(() => {
-        if (currentRoundState.loading || !gameState.game || gameState.loading) {
+        if (currentRound?.status == RoundStatus.FINISHED) {
+            navigate("/gameStarted");
+        }
+    }, [currentRoundState])
+
+    useEffect(() => {
+        if (!game || currentRoundLoading || gameLoading) {
             return
         }
 
-        if (!currentRoundState.round && !currentRoundState.error && gameState.game) {
-            getCurrentRound(gameState.game.id)
+        if (!currentRound && !currentRoundState.error) {
+            getCurrentRound(game.id)
         }
 
     }, [currentRoundState, gameState])
 
     const handleTimerComplete = () => {
-        navigate("/gameStarted");
+        setRoundActive(false)
+        getCurrentRound(game!!.id).then(round => {
+            if (round?.status == RoundStatus.FINISHED) {
+                navigate("/gameStarted");
+            } else {
+                refTimer.current = window.setTimeout(() => {
+                    getCurrentRound(game!!.id).then(round => {
+                        navigate("/gameStarted");
+                    });
+                }, 500);
+            }
+        })
+    }
+
+    useEffect(() => {
+        return () => {
+            if (refTimer.current !== null) {
+                window.clearTimeout(refTimer.current);
+            }
+        };
+    }, []);
+
+    let timerValue = 0;
+    if (currentRound && game) {
+        timerValue = calculateRoundTime(currentRound.startTime, game.moveTime)
     }
 
     return (
@@ -40,11 +82,8 @@ const GuessContainer: React.FC<Props> = ({userState, gameState, gameUsersState,c
                     {gameState.game && currentRoundState.round &&
                         <>
                             <h3 className="display-6 fw-bold py-3">???</h3>
-
-                            <RoundTimer roundStart={currentRoundState.round.startTime}
-                                        moveTimeInSec={gameState.game.moveTime}
-                                        onComplete={handleTimerComplete}
-                            />
+                            {roundActive && <RoundTimer seconds={timerValue} onComplete={() => handleTimerComplete()}/>}
+                            {!roundActive && <span>{t("round.finished")}</span>}
                         </>
                     }
                 </div>

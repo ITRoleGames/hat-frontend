@@ -9,10 +9,9 @@ import {logInfo} from "../../utils/logging.utils";
 import {Round} from "../../model/round.model";
 import {RoundStatus} from "../../model/round-status";
 
-function TeamList({game,currentRound, currentUser, gameUsers, startRound}: Props) {
+function TeamList({game, currentRound, currentUser, gameUsers, startRound}: Props) {
 
     const players = game.players;
-
     const playersWithNames: PlayerWithName[] = players.map((player: Player): PlayerWithName => {
         const gameUser = gameUsers?.find(gu => gu.id == player.userId);
         return {...player, name: gameUser ? gameUser.name : "unknown"}
@@ -22,6 +21,16 @@ function TeamList({game,currentRound, currentUser, gameUsers, startRound}: Props
         groupBy(playersWithNames, (player: PlayerWithName) => {
             return player.teamId
         });
+
+    const getNextMoveOrder = (previousPlayerId: number) =>{
+        const previousPlayer = game.players.find(p => p.id == previousPlayerId);
+        if(!previousPlayer){
+            console.error("Previous player not found")
+            return 0;
+        }
+        const totalPlayers = game.players.length;
+        return previousPlayer?.moveOrder == totalPlayers -1 ? 0 : previousPlayer?.moveOrder +1
+    }
 
     const constructTeamPanelProps = (
         game: Game,
@@ -36,40 +45,46 @@ function TeamList({game,currentRound, currentUser, gameUsers, startRound}: Props
         const isCurrentUsersTeam = players.findIndex((player) => player.userId == currentUser.id) != -1;
 
         let currentRoundStartTime;
-        if(currentRound && currentRound.status == RoundStatus.STARTED){
+        if (currentRound && currentRound.status == RoundStatus.STARTED) {
             currentRoundStartTime = currentRound.startTime;
         }
 
-        // console.log(`game.moveTimeInSec : ${game.moveTime}`)
+        let nextMoveOrder = 0;
+
+        if(currentRound){
+            nextMoveOrder = getNextMoveOrder(currentRound.explainerId)
+            console.log(`next move order: ${nextMoveOrder}`)
+        }
+
         return {
             currentUserId: currentUser.id,
             players: players,
             wordsCount: 0,
             isCurrentUsersTeam: isCurrentUsersTeam,
             isTeamPlaying: isTeamPlaying,
-            nextMoveOrder: 0,
+            nextMoveOrder: nextMoveOrder,
             roundTime: game.moveTime,
             currentRoundStartTime: currentRoundStartTime
         }
     }
 
-    const handleStartRound  = () => {
-        logInfo("call start round from team list")
+    const handleStartRound = () => {
+        // logInfo("call start round from team list")
         startRound(game.id)
     }
 
     return (
         <>
             {
-                Object.keys(playersGroupedByTeam).map(key => {
+                Object.keys(playersGroupedByTeam).map(teamId => {
                     const teamProps = constructTeamPanelProps(
                         game,
                         currentUser,
                         playersGroupedByTeam,
-                        key
+                        teamId
                     )
                     return (
-                        <div key={key}>
+                        <div key={teamId}>
                             <TeamWarning game={game} {...teamProps}/>
                             <TeamPanel {...teamProps} startRound={handleStartRound}/>
                         </div>

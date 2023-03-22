@@ -12,8 +12,6 @@ import {startGameAction} from "../actions/game.action";
 import {useNavigate} from "react-router";
 import {Button} from "react-bootstrap";
 import {GameStatus} from "../model/game-status";
-import {Game} from "../model/game.model";
-import {logInfo} from "../utils/logging.utils";
 
 const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, userState, getGameUsers, startGame}) => {
 
@@ -21,41 +19,25 @@ const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, userSta
     const navigate = useNavigate();
     const players: Player[] = gameState?.game?.players ? gameState.game.players : []
 
-    const navigateToGameStartedPageIfGameStarted = (game: Game | undefined) => {
-        logInfo(`game status: ${game?.status}`)
-        if (game?.status == GameStatus.STARTED) {
-            navigate("/gameStarted")
-        }
-    }
+    const {game, loading: gameLoading} = gameState;
+
     useEffect(() => {
-        logInfo("WAITING: game state updated")
-        if (gameState.loading) {
-            return
+        if (!gameLoading) {
+            if (game?.status == GameStatus.STARTED) {
+                navigate("/gameStarted")
+            }
         }
-
-        if (gameState.game && (gameState.game.players.length > gameUsersState.users.length)) { //todo: move into reducer or somewhere
-            logInfo("requesting players info")
-            getGameUsers(gameState.game.players.map(player => player.userId)).then(() => {
-                    logInfo("navigating to game started 1")
-                    navigateToGameStartedPageIfGameStarted(gameState.game)
-                }
-            )
-        } else {
-            logInfo("navigating to game started 2")
-            navigateToGameStartedPageIfGameStarted(gameState.game)
-        }
-
     }, [gameState])
 
     const handleStartGame = async (gameId: string) => {
         startGame(gameId).then(() => navigate("/gameStarted"));
     };
 
-    const gameId = gameState.game?.id;
+    const gameId = game?.id;
 
     const isGameCreator = (): boolean => {
         const currentPlayer = players.find(p => p.userId == userState.user?.id);
-        return gameState.game?.creatorId == currentPlayer?.userId
+        return game?.creatorId == currentPlayer?.userId
     }
 
     return (

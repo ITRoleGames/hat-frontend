@@ -21,9 +21,6 @@ function TeamPanel({
 
     const currentPlayer: PlayerWithName | undefined = players.find(p => p.userId == currentUserId);
 
-    // console.log(`roundTime: ${roundTime}`)
-    // console.log(`nextMoveOrder: ${nextMoveOrder}`)
-    // console.log(`currentPlayer: ${JSON.stringify(currentPlayer)}`)  //todo: remove
     const isCurrentUserMove = currentPlayer?.moveOrder == nextMoveOrder
     return (
         <>
@@ -43,7 +40,7 @@ function TeamPanel({
                     <div className="d-flex flex-column flex-grow-1">
                         {players.map(player => {
                             return (
-                                <div key={player.id} className="d-flex flex-row justify-content-left mb-2">
+                                <div key={`p${player.id}`} className="d-flex flex-row justify-content-left mb-2">
                                     <PlayerIcon playerStatus={player.status}/>
                                     <div className="align-self-center text-start ms-2">
                                         {player.name}
@@ -67,9 +64,9 @@ function TeamPanel({
                     <div className="d-flex flex-row align-items-center">
                         <div className="d-flex flex-column flex-grow-1">
                             {currentRoundStartTime &&
-                                <RoundTimer roundStart={currentRoundStartTime}
-                                            moveTimeInSec={roundTime}
-                                            onComplete={() => console.log("round completed")}
+                                <RoundTimer
+                                seconds={roundTime}
+                                onComplete={() => console.log("round completed")}
                                 />
                             }
                             {!currentRoundStartTime &&
@@ -100,7 +97,7 @@ type Props = {
     isTeamPlaying: boolean,
     nextMoveOrder: number,
     roundTime: number,
-    currentRoundStartTime: Date | undefined,
+    currentRoundStartTime: string | undefined,
     startRound: () => any
 };
 

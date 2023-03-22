@@ -11,9 +11,10 @@ import WordValues from "./add-words-form-data";
 import {useNavigate} from "react-router";
 import {Action} from "redux";
 import Loading from "../common/loading.component";
+import {getGameAction} from "../../actions/game.action";
 
 
-const AddWordsPage: React.FC<AddWordsProps> = ({gameState, addWords}) => {
+const AddWordsPage: React.FC<AddWordsProps> = ({gameState, addWords, getGame}) => {
 
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -28,7 +29,17 @@ const AddWordsPage: React.FC<AddWordsProps> = ({gameState, addWords}) => {
             gameId: formData.gameId,
             words: words
         }
-        addWords(data).then(() => navigate("/waitingPlayers"));
+
+        addWords(data).then(() => {
+                if (game) {
+                    getGame(game.id).then(() =>
+                        navigate("/waitingPlayers")
+                    )
+                } else {
+                    navigate("/waitingPlayers")
+                }
+            }
+        );
     };
 
 
@@ -55,6 +66,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
     addWords: async (data: AddWordsData) => await dispatch(addWordsAction(data)),
+    getGame: async (gameId: string) => await dispatch(getGameAction(gameId))
 });
 
 

@@ -18,20 +18,29 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
         component: Component,
         userState,
         gameState,
+        gameUsersState,
         getUser,
         getGame,
         getGameUsers
     }
 ) => {
     if (isUserLoggedIn()) {
-        if (userState.user == null && !userState.loading && !userState.error) {
+        const {game, loading: gameLoading, error: gameError} = gameState;
+        const {user, loading: userLoading, error: userError} = userState;
+        const {users, loading: gameUsersLoading} = gameUsersState;
+
+        if (user == null && !userLoading && !userError) {
             getUser();
         }
 
-        if (gameState.game == null && !gameState.loading && !gameState.error) {
+        if (!game && !gameLoading && !gameError) {
             const gameId = getGameIdFromLocalStorage();
             if (gameId) {
-                getGame(gameId).then(game => getGameUsers(game.players.map(p => p.userId)))
+                getGame(gameId).then(game => {
+                        if (game.players.length > users.length && !gameUsersLoading)
+                            getGameUsers(game.players.map(p => p.userId))
+                    }
+                )
             }
         }
 
@@ -43,7 +52,8 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
 
 const mapStateToProps = (state: RootState) => ({
     userState: state.user,
-    gameState: state.game
+    gameState: state.game,
+    gameUsersState: state.gameUsers
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({

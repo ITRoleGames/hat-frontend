@@ -6,14 +6,14 @@ import {ThunkDispatch} from "redux-thunk";
 import {Action} from "redux";
 import Loading from "../components/common/loading.component";
 import {finishRoundAction, getCurrentRoundAction, nextExplanationAction} from "../slice/round.slice";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
 import {UpdateExplanationData} from "../model/update-explanation-data.mode";
 import {ExplanationStatus} from "../model/explanation-status";
 import {useNavigate} from "react-router";
 import RoundTimer from "../components/common/timer.component";
-import {logInfo} from "../utils/logging.utils";
 import {RoundStatus} from "../model/round-status";
+import {calculateRoundTime} from "../utils/time-util";
 
 const ExplainContainer: React.FC<Props> = ({
                                                userState,
@@ -24,27 +24,20 @@ const ExplainContainer: React.FC<Props> = ({
                                                nextExplanation,
                                                finishRound
                                            }) => {
-
     const {t} = useTranslation();
     const navigate = useNavigate();
 
+    const [roundActive, setRoundActive] = useState(true);
     const word = currentRoundState.round ? currentRoundState.round.explanation.wordValue : t("loading");
 
-    const handleTimerComplete = () => {
-        //gameId: string, roundId: number
+    const {round: currentRound, loading: currentRoundLoading} = currentRoundState;
+    const {game, loading: gameLoading} = gameState;
 
-        if(!currentRoundState.loading && currentRoundState.round?.status == RoundStatus.STARTED){
-
-            logInfo("Explain screen: handleTimerComplete")
-            logInfo(`currentRoundState.round.state: ${currentRoundState.round!!.status}`)
-            logInfo(`currentRoundState.round.loading: ${currentRoundState.loading}`)
-
-            finishRound(gameState.game!!.id, currentRoundState.round!!.id).then(() => {
-                navigate("/gameStarted");
-            })
+    useEffect(() => {
+        if (currentRoundState.round?.status == RoundStatus.FINISHED) {
+            navigate("/gameStarted");
         }
-
-    }
+    }, [currentRoundState])
 
     useEffect(() => {
         if (currentRoundState.loading || !gameState.game || gameState.loading) {
@@ -57,6 +50,19 @@ const ExplainContainer: React.FC<Props> = ({
 
     }, [currentRoundState, gameState])
 
+    const handleTimerComplete = () => {
+        setRoundActive(false)
+        if (!currentRoundState.loading && currentRoundState.round?.status == RoundStatus.STARTED) {
+            finishRound(gameState.game!!.id, currentRoundState.round!!.id).then(() => {
+                navigate("/gameStarted");
+            })
+        }
+    }
+
+    let timerValue = 0;
+    if (currentRound && game) {
+        timerValue = calculateRoundTime(currentRound.startTime, game.moveTime)
+    }
 
     const handleGuessed = () => {
 
@@ -87,10 +93,10 @@ const ExplainContainer: React.FC<Props> = ({
                     {gameState.game && currentRoundState.round &&
                         <>
                             <h3 className="display-6 fw-bold py-3">{word}</h3>
-                            <RoundTimer roundStart={currentRoundState.round.startTime}
-                                        moveTimeInSec={gameState.game.moveTime}
-                                        onComplete={handleTimerComplete}
-                            />
+                            {roundActive &&
+                                <RoundTimer seconds={timerValue} onComplete={() => handleTimerComplete()}/>
+                            }
+                            {!roundActive && <span>{t("round.finished")}</span>}
                             <div className="px-4 py-5 d-grid gap-5 mx-auto">
                                 <Button variant="success" size="lg" onClick={handleGuessed}>
                                     {t("round.guessed")}

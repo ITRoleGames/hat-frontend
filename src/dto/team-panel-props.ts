@@ -8,5 +8,5 @@ export interface TeamPanelProps {
     isTeamPlaying: boolean,
     nextMoveOrder: number,
     roundTime: number,
-    currentRoundStartTime: Date | undefined
+    currentRoundStartTime: string | undefined
 }

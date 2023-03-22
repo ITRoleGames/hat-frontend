@@ -5,6 +5,6 @@ export interface Round {
     id: number,
     explainerId: number,
     explanation: Explanation,
-    startTime: Date, //todo: date
+    startTime: string, //todo: date
     status: RoundStatus
 }

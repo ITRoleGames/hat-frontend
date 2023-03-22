@@ -22,10 +22,12 @@ const roundSlice = createSlice({
     reducers: {
         getLatestRoundActionPending(state: RoundState) {
             state.loading = true
+            state.error = null
         },
         getLatestRoundActionSuccess: (state: RoundState, action: PayloadAction<Round | undefined>) => {
             state.loading = false
             state.round = action.payload;
+            state.error = null
         },
         getLatestRoundActionFailed: (state: RoundState, action: PayloadAction<string>) => {
             state.loading = false
@@ -33,10 +35,12 @@ const roundSlice = createSlice({
         },
         startRoundActionPending(state: RoundState) {
             state.loading = true
+            state.error = null
         },
         startRoundActionSuccess(state: RoundState, action: PayloadAction<Round>) {
             state.loading = false
             state.round = action.payload;
+            state.error = null
         },
         startRoundActionFailed(state: RoundState, action: PayloadAction<string>) {
             state.loading = false
@@ -44,10 +48,12 @@ const roundSlice = createSlice({
         },
         finishRoundActionPending(state: RoundState) {
             state.loading = true
+            state.error = null
         },
         finishRoundActionSuccess(state: RoundState) {
             state.loading = false
             state.round ? state.round.status = RoundStatus.FINISHED : undefined
+            state.error = null
         },
         finishRoundActionFailed(state: RoundState, action: PayloadAction<string>) {
             state.loading = false
@@ -55,10 +61,12 @@ const roundSlice = createSlice({
         },
         nextExplanationActionPending(state: RoundState) {
             state.loading = true
+            state.error = null
         },
         nextExplanationActionSuccess(state: RoundState, action: PayloadAction<Explanation>) {
             state.loading = false
             state.round ? state.round.explanation = action.payload : undefined
+            state.error = null
         },
         nextExplanationActionFailed(state: RoundState, action: PayloadAction<string>) {
             state.loading = false
