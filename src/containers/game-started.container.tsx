@@ -32,17 +32,6 @@ const GameStartedContainer: React.FC<Props> = ({
     const {users, loading: usersLoading} = gameUsersState;
 
     useEffect(() => {
-        if (gameLoading || usersLoading) {
-            return
-        }
-
-        if (game && (game.players.length > users.length)) {
-            getGameUsers(game.players.map(player => player.userId))
-        }
-    }, [gameState])
-
-
-    useEffect(() => {
         if (game && !currentRound && !currentRoundLoading && !currentRoundError) {
             getCurrentRound(game.id)
             return;
