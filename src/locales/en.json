@@ -7,6 +7,7 @@
     "btn.startRound": "Start round",
     "btn.words.add": "Put into the hat",
     "btn.startGame": "Go to casting of lots",
+    "btd.changeLang": "На Русском",
     "createGame.form.error.minWordsPerPlayer": "Maximum number of words is {{min}}",
     "createGame.form.error.maxWordsPerPlayer": "Maximum number of words is {{max}}",
     "createGame.form.error.minTime": "Min time is  {{min}} sec",
@@ -41,6 +42,14 @@
     "team.itIsYou": "It's you",
     "loading": "Loading...",
     "codeCopiedToClipboard": "Code copied",
-    "codeCopyError": "Copy error occurred. Try to copy manually."
+    "codeCopyError": "Copy error occurred. Try to copy manually.",
+    "gameFinished.title": "Game finished!",
+    "gameFinished.results.title": "Game results",
+    "gameFinished.results.wordsGuessed": "Words guessed",
+    "gameFinished.results.totalTime": "Total time",
+    "gameFinished.results.totalRounds": "Total moves",
+    "gameFinished.results.teamsRating": "Team results",
+    "gameFinished.results.teamPlace": "place",
+    "gameFinished.results.teamResult": "Team result"
   }
 }

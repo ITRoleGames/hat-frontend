@@ -38,7 +38,7 @@ function AddWordsForm({onFormSubmit, gameId, wordsPerPlayer, loading}: Props) {
                 }
                 <div className="py-5 d-grid gap-5 mx-auto">
                     <Button type="submit" variant="primary" size="lg" disabled={loading}>
-                        {t("btd.words.add")}
+                        {t("btn.words.add")}
                     </Button>
                 </div>
             </form>
