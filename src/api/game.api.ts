@@ -2,6 +2,7 @@ import axios from "axios";
 import { CreateGameData } from "model/create-game-data.model";
 import { Game } from "model/game.model";
 import { UrlUtils } from "utils/url-utils";
+import {GameReport} from "../model/game-report.model";
 
 export class GameApi {
 
@@ -33,6 +34,14 @@ export class GameApi {
         const response = await axios.post(`${ UrlUtils.API_V1 }/games/${id}/startGame`);
         return response.data;
     };
+
+
+    static getReport = async(id: string): Promise<GameReport> =>{
+
+        const response = await axios.post(`${ UrlUtils.API_V1 }/games/${id}/report`);
+        return response.data;
+
+    }
 
 }
 
