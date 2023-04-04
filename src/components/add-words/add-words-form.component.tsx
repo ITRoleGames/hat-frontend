@@ -1,22 +1,14 @@
 import {Button} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Game} from "../../model/game.model";
 import WordValues from "./add-words-form-data";
 
-type Props = {
-    onFormSubmit: (data: WordValues) => void;
-    game: Game
-    loading: boolean
-};
-
-function AddWordsForm({onFormSubmit, game, loading}: Props) {
-
+function AddWordsForm({onFormSubmit, gameId, wordsPerPlayer, loading}: Props) {
     const {t} = useTranslation();
 
     const methods = useForm<WordValues>({
         mode: "onSubmit",
-        defaultValues: { words: [] , gameId: game.id},
+        defaultValues: { words: [] , gameId: gameId},
     });
 
     const {register, handleSubmit, formState: {errors}} = methods;
@@ -27,7 +19,7 @@ function AddWordsForm({onFormSubmit, game, loading}: Props) {
         <div className="col-md-6 mx-auto">
             <form onSubmit={handleSubmit(onSubmit)} className="d-inline-block">
                 {
-                    Array.from({length: game.wordsPerPlayer}).map((_, index: number) => {
+                    Array.from({length: wordsPerPlayer}).map((_, index: number) => {
                         return (
                             <div className="input-group has-validation mt-3" key={index}>
                                 <input
@@ -52,7 +44,13 @@ function AddWordsForm({onFormSubmit, game, loading}: Props) {
             </form>
         </div>
     );
-
 }
+
+type Props = {
+    onFormSubmit: (data: WordValues) => void;
+    gameId: string,
+    wordsPerPlayer: number,
+    loading: boolean
+};
 
 export default AddWordsForm
