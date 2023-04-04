@@ -5,20 +5,21 @@ import {RootState} from "reducers/combine";
 import {useEffect} from "react";
 import {ThunkDispatch} from "redux-thunk";
 import {Action} from "redux";
-import {getGameUsersAction} from "../slice/game-users.slice";
 import Loading from "../components/common/loading.component";
 import GameStats from "../components/common/game-stats";
 import TeamList from "../components/common/team-list";
 import {getCurrentRoundAction, startRoundAction} from "../slice/round.slice";
 import {useNavigate} from "react-router";
 import {RoundStatus} from "../model/round-status";
+import {getGameReportAction} from "../slice/game-report.slice";
 
 const GameStartedContainer: React.FC<Props> = ({
                                                    userState,
                                                    gameState,
                                                    gameUsersState,
                                                    currentRoundState,
-                                                   getGameUsers,
+                                                   gameReportState,
+                                                   getGameReport,
                                                    startRound,
                                                    getCurrentRound
                                                }) => {
@@ -30,6 +31,7 @@ const GameStartedContainer: React.FC<Props> = ({
     const {user} = userState;
     const {game, loading: gameLoading} = gameState;
     const {users, loading: usersLoading} = gameUsersState;
+    const {gameReport} = gameReportState;
 
     useEffect(() => {
         if (game && !currentRound && !currentRoundLoading && !currentRoundError) {
@@ -44,7 +46,6 @@ const GameStartedContainer: React.FC<Props> = ({
         }
 
         if (currentRound && !currentRoundLoading && !currentRoundError) {
-            // logInfo("current round loaded")
             const currentPlayer = game.players.find(player => player.userId == user?.id);
             const explainerId = currentRound.explainerId;
             if (!currentPlayer) {
@@ -72,6 +73,13 @@ const GameStartedContainer: React.FC<Props> = ({
 
     }, [currentRoundState, gameState])
 
+    useEffect(() => {
+        if (game) {
+            getGameReport(game.id)
+            return;
+        }
+    }, [currentRoundState])
+
 
     const handleStartRound = (gameId: string) => {
         startRound(gameId).then(() => {
@@ -88,12 +96,17 @@ const GameStartedContainer: React.FC<Props> = ({
                     {gameLoading && <Loading/>}
                     {game && user &&
                         <>
-                            <GameStats wordsCount={game.wordsCount}/>
+                            <GameStats
+                                wordsCount={game.wordsCount}
+                                wordsGuessed={gameReport?.wordsGuessed}
+                                totalTime={gameReport?.totalTime}
+                            />
                             <TeamList
                                 game={game}
                                 currentRound={currentRound}
                                 currentUser={user}
                                 gameUsers={users}
+                                gameReport={gameReport}
                                 startRound={handleStartRound}
                             />
                         </>
@@ -108,13 +121,14 @@ const mapStateToProps = (state: RootState) => ({
     userState: state.user,
     gameState: state.game,
     gameUsersState: state.gameUsers,
-    currentRoundState: state.round
+    currentRoundState: state.round,
+    gameReportState: state.gameReport
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
-    getGameUsers: async (ids: string[]) => await dispatch(getGameUsersAction(ids)),
     startRound: async (gameId: string) => await dispatch(startRoundAction(gameId)),
     getCurrentRound: async (gameId: string) => await dispatch(getCurrentRoundAction(gameId)),
+    getGameReport: async (gameId: string) => await dispatch(getGameReportAction(gameId))
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

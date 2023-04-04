@@ -7,14 +7,16 @@ import {PlayerWithName} from "../../dto/player-with-name";
 import {TeamPanelProps} from "../../dto/team-panel-props";
 import {Round} from "../../model/round.model";
 import {RoundStatus} from "../../model/round-status";
+import {GameReport} from "../../model/game-report.model";
+import {PlayerRef} from "../../model/player-ref.model";
+import {TeamStatistics} from "../../model/team-statistics.model";
+import {groupBy} from "../../service/group.utils";
+import {enrichPlayersWithNames} from "../../service/player.utils";
 
-function TeamList({game, currentRound, currentUser, gameUsers, startRound}: Props) {
+function TeamList({game, currentRound, currentUser, gameUsers, gameReport, startRound}: Props) {
 
     const players = game.players;
-    const playersWithNames: PlayerWithName[] = players.map((player: Player): PlayerWithName => {
-        const gameUser = gameUsers?.find(gu => gu.id == player.userId);
-        return {...player, name: gameUser ? gameUser.name : "unknown"}
-    });
+    const playersWithNames: PlayerWithName[] = enrichPlayersWithNames(players, gameUsers);
 
     const playersGroupedByTeam: Record<string, PlayerWithName[]> =
         groupBy(playersWithNames, (player: PlayerWithName) => {
@@ -33,6 +35,7 @@ function TeamList({game, currentRound, currentUser, gameUsers, startRound}: Prop
 
     const constructTeamPanelProps = (
         game: Game,
+        gameReport: GameReport | undefined,
         currentUser: User,
         playersGroupedByTeam: Record<string, PlayerWithName[]>,
         teamId: string
@@ -54,10 +57,14 @@ function TeamList({game, currentRound, currentUser, gameUsers, startRound}: Prop
             currentRoundStartTime = currentRound.startTime;
         }
 
+        const teamStats = gameReport?.teamStats?.find((ts: TeamStatistics) =>
+            ts.players.findIndex((playerRef: PlayerRef) => playerRef.internalId == players[0].id) != -1
+        );
+
         return {
             currentUserId: currentUser.id,
             players: players,
-            wordsCount: 0,
+            wordsCount: teamStats ? teamStats.wordsGuessed : 0,
             isCurrentUsersTeam: isCurrentUsersTeam,
             isTeamPlayingNext: isTeamPlaying,
             nextMoveOrder: nextMoveOrder,
@@ -77,6 +84,7 @@ function TeamList({game, currentRound, currentUser, gameUsers, startRound}: Prop
                 Object.keys(playersGroupedByTeam).map(teamId => {
                     const teamProps = constructTeamPanelProps(
                         game,
+                        gameReport,
                         currentUser,
                         playersGroupedByTeam,
                         teamId
@@ -93,20 +101,14 @@ function TeamList({game, currentRound, currentUser, gameUsers, startRound}: Prop
     )
 }
 
-function groupBy<T>(arr: T[], fn: (item: T) => any): Record<string, T[]> {
-    return arr.reduce<Record<string, T[]>>((prev, curr) => {
-        const groupKey = fn(curr);
-        const group = prev[groupKey] || [];
-        group.push(curr);
-        return {...prev, [groupKey]: group};
-    }, {});
-}
+
 
 type Props = {
     game: Game,
     currentRound: Round | undefined,
     currentUser: User,
     gameUsers: User[],
+    gameReport: GameReport | undefined,
     startRound: (gameId: string) => any
 };
 

@@ -44,6 +44,14 @@
     "codeCopyError": "Ошибка копирования кода. Попробуйте скопировать вручную.",
     "round.youExplain" : "Вы объясняете слово",
     "round.youGuess": "Вы угадываете слово",
-    "round.guessed": "Угадал"
+    "round.guessed": "Угадал",
+    "gameFinished.title": "Игра завершена",
+    "gameFinished.results.title": "Результаты игры",
+    "gameFinished.results.wordsGuessed": "Отгадано слов",
+    "gameFinished.results.totalTime": "Время игры",
+    "gameFinished.results.totalRounds": "Количество раундов",
+    "gameFinished.results.teamsRating": "Рейтинг команд",
+    "gameFinished.results.teamPlace": "место",
+    "gameFinished.results.teamResult": "Результаты команды"
   }
 }

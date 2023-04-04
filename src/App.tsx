@@ -13,6 +13,7 @@ import ExplainContainer from "./containers/explain.container";
 import GuessContainer from "./containers/guess.container";
 import GameCreatedContainer from "./containers/game-created.container";
 import AddWordsContainer from "./containers/add-words-page.container";
+import GameFinishedContainer from "./containers/game-finished.container";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/addWords" element={<PrivateRoute component={AddWordsContainer}/>}/>
                 <Route path="/waitingPlayers" element={<PrivateRoute component={WaitingPlayersPage}/>}/>
                 <Route path="/gameStarted" element={<PrivateRoute component={GameStartedContainer}/>}/>
+                <Route path="/gameFinished" element={<PrivateRoute component={GameFinishedContainer}/>}/>
                 <Route path="/explain" element={<PrivateRoute component={ExplainContainer}/>}/>
                 <Route path="/guess" element={<PrivateRoute component={GuessContainer}/>}/>
                 <Route path="*" element={<PageNotFound/>}>

@@ -15,7 +15,7 @@ const initialState: GameState = {
 };
 
 const gameSlice = createSlice({
-    name: "gameUsers",
+    name: "game",
     initialState,
     reducers: {
         getGameActionPending(state: GameState) {
