@@ -32,7 +32,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
 
     if (response.status === 401) {
         showError("Authorization error");
-    } else if ([ 400, 404, 405, 409, 500 ].indexOf(response.status) !== -1) {
+    } else if ([ 400, 404, 405, 409, 422, 500 ].indexOf(response.status) !== -1) {
 
         if (error.message) {
             errorText = error.message;

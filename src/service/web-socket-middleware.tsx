@@ -1,5 +1,5 @@
 import {Middleware, MiddlewareAPI} from "redux"
-import {connectingAction, EventActionType} from "../actions/event.actions";
+import {connectedAction, connectingAction, EventActionType} from "../actions/event.actions";
 import {
     BufferEncoders,
     encodeBearerAuthMetadata,
@@ -16,7 +16,6 @@ import {
 import RSocketWebSocketClient from "rsocket-websocket-client";
 import {ISubscription} from "rsocket-types/ReactiveStreamTypes";
 import {ReactiveSocket} from "rsocket-types";
-import {getGameActionFailed, getGameActionPending, getGameActionSuccess} from "../actions/game.action";
 import {GameApi} from "../api/game.api";
 import {Game} from "../model/game.model";
 import {AxiosError} from "axios";
@@ -28,6 +27,16 @@ import {
 } from "../slice/game-users.slice";
 import {GetUsersResponse} from "../dto/get-users-response";
 import {getAccessToken} from "./local-storage";
+import {GameStatus} from "../model/game-status";
+import {RoundApi} from "../api/round.api";
+import {Round} from "../model/round.model";
+import {
+    getLatestRoundActionFailed,
+    getLatestRoundActionPending,
+    getLatestRoundActionSuccess
+} from "../slice/round.slice";
+import {logError, logInfo} from "../utils/logging.utils";
+import {getGameActionFailed, getGameActionPending, getGameActionSuccess} from "../slice/game.slice";
 
 const webSocketMiddleware: Middleware = store => {
 
@@ -93,17 +102,30 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
     const errorHandler = (e: any) => console.error(e);
 
     const responseHandler = (payload: any) => {
+        logInfo("New WS event received")
         const gameEvent = payload.data
         if (gameEvent.type == "GAME_UPDATED" && gameEvent.actorUserId != userId) {
-            store.dispatch(getGameActionPending());
-            GameApi.getGame(gameId).then((game: Game) => {
-                store.dispatch(getGameActionSuccess(game));
 
-                store.dispatch(getGameUsersActionPending(users));
-                UserApi.getUsers(game.players.map(p => p.userId)).then((resp: GetUsersResponse) => {
-                    store.dispatch(getGameUsersActionSuccess(resp.users));
-                }).catch((error: AxiosError) => store.dispatch(getGameUsersActionFailed(error.message)));
-            }).catch((error: AxiosError) => store.dispatch(getGameActionFailed(error.message)));
+            const gameState = store.getState().game;
+            if(gameState.game.status == GameStatus.STARTED){
+                store.dispatch(getLatestRoundActionPending());
+                RoundApi.getLatestRound(gameState.game.id).then((resp: Round | undefined) => {
+                    if (resp) {
+                        store.dispatch(getLatestRoundActionSuccess(resp));
+                    } else {
+                        store.dispatch(getLatestRoundActionFailed("not found"));
+                    }
+                }).catch((error: AxiosError) => store.dispatch(getLatestRoundActionFailed(error.message)));
+            }else {
+                store.dispatch(getGameActionPending());
+                GameApi.getGame(gameId).then((game: Game) => {
+                    store.dispatch(getGameActionSuccess(game));
+                    store.dispatch(getGameUsersActionPending(users));
+                    UserApi.getUsers(game.players.map(p => p.userId)).then((resp: GetUsersResponse) => {
+                        store.dispatch(getGameUsersActionSuccess(resp.users));
+                    }).catch((error: AxiosError) => store.dispatch(getGameUsersActionFailed(error.message)));
+                }).catch((error: AxiosError) => store.dispatch(getGameActionFailed(error.message)));
+            }
         }
     }
 
@@ -116,11 +138,12 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
             onError: errorHandler,
             onNext: responseHandler,
             onSubscribe: (subscription: ISubscription) => {
-                console.log("RSocket subscribed.");
+                console.log("RSocket connection established");
+                store.dispatch(connectedAction())
                 subscription.request(MAX_STREAM_ID);
             },
             onComplete: () => {
-                console.log("RSocket subscription complete.")
+                console.log("RSocket subscription complete")
             }
         })
     }

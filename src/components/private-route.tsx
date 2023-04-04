@@ -1,13 +1,14 @@
 import {getCurrentUserAction} from "actions/user.action";
-import {FC} from "react";
+import {FC, useEffect, useState} from "react";
 import {connect, ConnectedProps} from "react-redux";
 import {Navigate} from "react-router-dom";
 import {RootState} from "reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
 import {getGameIdFromLocalStorage, isUserLoggedIn} from "service/local-storage";
-import {getGameAction} from "../actions/game.action";
 import {getGameUsersAction} from "../slice/game-users.slice";
 import {Action} from "redux";
+import Loading from "./common/loading.component";
+import {getGameAction} from "../slice/game.slice";
 
 interface PrivateRouteProps {
     component: React.FC;
@@ -18,32 +19,65 @@ const PrivateRoute: FC<PrivateRouteProps & ConnectedProps<typeof connector>> = (
         component: Component,
         userState,
         gameState,
+        gameUsersState,
         getUser,
         getGame,
         getGameUsers
     }
 ) => {
-    if (isUserLoggedIn()) {
-        if (userState.user == null && !userState.loading && !userState.error) {
-            getUser();
-        }
+    const [ready, setReady] = useState(false);
 
-        if (gameState.game == null && !gameState.loading && !gameState.error) {
-            const gameId = getGameIdFromLocalStorage();
-            if (gameId) {
-                getGame(gameId).then(game => getGameUsers(game.players.map(p => p.userId)))
-            }
-        }
-
-        return <Component/>;
+    if (!isUserLoggedIn()) {
+        return <Navigate to="/"/>
     }
 
-    return <Navigate to="/"/>;
+    const {game, loading: gameLoading, error: gameError} = gameState;
+    const {user, loading: userLoading, error: userError} = userState;
+    const {users, loading: gameUsersLoading} = gameUsersState;
+
+    const loadGame = () => {
+        if (!game && !gameLoading && !gameError) {
+            const gameId = getGameIdFromLocalStorage();
+            if (gameId) {
+                getGame(gameId).then(game => {
+                        if (game.players.length > users.length && !gameUsersLoading)
+                            getGameUsers(game.players.map(p => p.userId)).then(_ => {
+                                setReady(true)
+                            })
+                    }
+                )
+            }
+        } else if (game && game.players.length > users.length && !gameUsersLoading && !gameError) {
+            getGameUsers(game.players.map(p => p.userId)).then(_ => {
+                setReady(true)
+            })
+        } else {
+            setReady(true)
+        }
+    }
+
+    useEffect(() => {
+        if (ready) return;
+        if (!user && !userLoading && !userError) {
+            getUser().then(_ => loadGame())
+        } else {
+            loadGame()
+        }
+
+    }, [ready])
+
+    return (
+        <>
+            {ready && <Component/>}
+            {!ready && <Loading/>}
+        </>
+    )
 }
 
 const mapStateToProps = (state: RootState) => ({
     userState: state.user,
-    gameState: state.game
+    gameState: state.game,
+    gameUsersState: state.gameUsers
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({

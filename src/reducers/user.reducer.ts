@@ -4,7 +4,7 @@ import { UserAction } from "actions/user.action";
 
 
 interface UserState {
-    user: User | null;
+    user?: User;
 
     loading: boolean;
 
@@ -12,7 +12,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-    user: null,
+    user: undefined,
     loading: false,
     error: null,
 };
@@ -23,7 +23,7 @@ const userReducer = (state: UserState = initialState, action: UserAction): UserS
         case UserActionType.CREATE_USER_PENDING:
             return {
                 loading: true,
-                user: null,
+                user: undefined,
                 error: null,
             };
         case UserActionType.CREATE_USER_SUCCESS:
@@ -35,13 +35,13 @@ const userReducer = (state: UserState = initialState, action: UserAction): UserS
         case UserActionType.CREATE_USER_FAILED:
             return {
                 loading: false,
-                user: null,
+                user: undefined,
                 error: action.payload,
             };
         case UserActionType.GET_CURRENT_USER_PENDING:
             return {
                 loading: true,
-                user: null,
+                user: undefined,
                 error: null,
             };
         case UserActionType.GET_CURRENT_USER_SUCCESS:
@@ -53,7 +53,7 @@ const userReducer = (state: UserState = initialState, action: UserAction): UserS
         case UserActionType.GET_CURRENT_USER_FAILED:
             return {
                 loading: false,
-                user: null,
+                user: undefined,
                 error: action.error,
             };
         default:

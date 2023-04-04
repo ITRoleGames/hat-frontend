@@ -1,5 +1,6 @@
 const TOKEN_LOCAL_STORAGE_ATTRIBUTE_NAME = "userToken";
 const GAME_ID = "gameId";
+const LANG = "lang";
 
 export function isUserLoggedIn(): boolean {
 
@@ -10,6 +11,19 @@ export function getAccessToken(): string | null {
 
     return localStorage.getItem(TOKEN_LOCAL_STORAGE_ATTRIBUTE_NAME);
 }
+
+
+export function setLang(lang: string): void {
+
+    return localStorage.setItem(LANG, lang);
+}
+
+export function getLang(): string {
+    const storedLang = localStorage.getItem(LANG);
+
+    return storedLang != null ? storedLang : "ru";
+}
+
 
 export function registerAccessToken(token: string): void {
 
