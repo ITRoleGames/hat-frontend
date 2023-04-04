@@ -5,10 +5,10 @@ import {Navigate} from "react-router-dom";
 import {RootState} from "reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
 import {getGameIdFromLocalStorage, isUserLoggedIn} from "service/local-storage";
-import {getGameAction} from "../actions/game.action";
 import {getGameUsersAction} from "../slice/game-users.slice";
 import {Action} from "redux";
 import Loading from "./common/loading.component";
+import {getGameAction} from "../slice/game.slice";
 
 interface PrivateRouteProps {
     component: React.FC;

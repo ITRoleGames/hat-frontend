@@ -8,10 +8,10 @@ import {Action} from "redux";
 import {getGameUsersAction} from "../slice/game-users.slice";
 import {useEffect} from "react";
 import {Player} from "../model/player.model";
-import {startGameAction} from "../actions/game.action";
 import {useNavigate} from "react-router";
 import {Button} from "react-bootstrap";
 import {GameStatus} from "../model/game-status";
+import {startGameAction} from "../slice/game.slice";
 
 const WaitingPlayersPage: React.FC<Props> = ({gameState, gameUsersState, userState, getGameUsers, startGame}) => {
 

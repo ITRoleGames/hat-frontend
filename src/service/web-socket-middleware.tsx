@@ -16,7 +16,6 @@ import {
 import RSocketWebSocketClient from "rsocket-websocket-client";
 import {ISubscription} from "rsocket-types/ReactiveStreamTypes";
 import {ReactiveSocket} from "rsocket-types";
-import {getGameActionFailed, getGameActionPending, getGameActionSuccess} from "../actions/game.action";
 import {GameApi} from "../api/game.api";
 import {Game} from "../model/game.model";
 import {AxiosError} from "axios";
@@ -37,6 +36,7 @@ import {
     getLatestRoundActionSuccess
 } from "../slice/round.slice";
 import {logError, logInfo} from "../utils/logging.utils";
+import {getGameActionFailed, getGameActionPending, getGameActionSuccess} from "../slice/game.slice";
 
 const webSocketMiddleware: Middleware = store => {
 

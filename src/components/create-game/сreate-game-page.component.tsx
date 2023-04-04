@@ -1,4 +1,3 @@
-import {createGameAction} from "actions/game.action";
 import {createUserAction} from "actions/user.action";
 import CreateGameForm from "components/create-game/create-game-form.component";
 import Header from "components/header/header.component";
@@ -10,6 +9,7 @@ import {useNavigate} from "react-router";
 import {RootState} from "reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
 import {Action} from "redux";
+import {createGameAction} from "../../slice/game.slice";
 
 
 const CreateGamePage: React.FC<CreateGameProps> = ({userState, createUser, createGame}) => {

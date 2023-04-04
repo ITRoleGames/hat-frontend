@@ -1,4 +1,3 @@
-import { joinGameAction } from "actions/game.action";
 import { createUserAction } from "actions/user.action";
 import Header from "components/header/header.component";
 import { JoinGameFormData } from "components/join-game/join-game-form-data";
@@ -10,6 +9,7 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
 import {Action} from "redux";
+import {joinGameAction} from "../../slice/game.slice";
 
 const JoinGamePage: React.FC<JoinGameProps> = ({ createUser, joinGame }) => {
 

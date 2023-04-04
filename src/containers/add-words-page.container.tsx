@@ -8,11 +8,11 @@ import {RootState} from "../reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
 import {Action} from "redux";
 import {addWordsAction} from "../actions/word.action";
-import {getGameAction} from "../actions/game.action";
 import AddWordsForm from "../components/add-words/add-words-form.component";
 import Loading from "../components/common/loading.component";
 import {useNavigate} from "react-router";
 import {useCallback, useEffect, useMemo, useRef} from "react";
+import {getGameAction} from "../slice/game.slice";
 
 const AddWordsContainer: React.FC<AddWordsProps> = ({addWords, getGame}) => {
 
