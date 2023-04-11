@@ -9,11 +9,11 @@ import {finishRoundAction, getCurrentRoundAction, nextExplanationAction} from ".
 import {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
 import {UpdateExplanationData} from "../model/update-explanation-data.mode";
-import {ExplanationStatus} from "../model/explanation-status";
 import {useNavigate} from "react-router";
 import RoundTimer from "../components/common/timer.component";
 import {RoundStatus} from "../model/round-status";
 import {calculateRoundTime} from "../utils/time-util";
+import {ExplanationResult} from "../model/explanation-result";
 
 const ExplainContainer: React.FC<Props> = ({
                                                userState,
@@ -76,7 +76,7 @@ const ExplainContainer: React.FC<Props> = ({
 
         const data = {
             id: explanationId,
-            status: ExplanationStatus.EXPLAINED,
+            result: ExplanationResult.EXPLAINED,
             endTime: new Date()
         } as UpdateExplanationData
 

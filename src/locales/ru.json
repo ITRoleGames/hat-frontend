@@ -46,6 +46,7 @@
     "round.youExplain" : "Вы объясняете слово",
     "round.youGuess": "Вы угадываете слово",
     "round.guessed": "Угадал",
+    "round.finished": "Раунд окончен",
     "gameFinished.title": "Игра завершена!",
     "gameFinished.results.title": "Результаты игры",
     "gameFinished.results.wordsGuessed": "Отгадано слов",

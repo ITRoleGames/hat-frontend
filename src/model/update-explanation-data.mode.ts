@@ -1,10 +1,10 @@
-import {ExplanationStatus} from "./explanation-status";
+import {ExplanationResult} from "./explanation-result";
 
 export interface UpdateExplanationData {
 
     id: number;
 
-    status: ExplanationStatus;
+    result: ExplanationResult;
 
     endTime: Date;
 }
