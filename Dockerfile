@@ -1,6 +1,5 @@
 #stage1
-FROM node:16-alpine as builder
-RUN apk --no-cache add git
+FROM node:16 as builder
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
