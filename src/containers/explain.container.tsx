@@ -14,6 +14,7 @@ import RoundTimer from "../components/common/timer.component";
 import {RoundStatus} from "../model/round-status";
 import {calculateRoundTime} from "../utils/time-util";
 import {ExplanationResult} from "../model/explanation-result";
+import {GameStatus} from "../model/game-status";
 
 const ExplainContainer: React.FC<Props> = ({
                                                userState,
@@ -30,8 +31,8 @@ const ExplainContainer: React.FC<Props> = ({
     const [roundActive, setRoundActive] = useState(true);
     const word = currentRoundState.round ? currentRoundState.round.explanation.wordValue : t("loading");
 
-    const {round: currentRound, loading: currentRoundLoading} = currentRoundState;
-    const {game, loading: gameLoading} = gameState;
+    const {round: currentRound} = currentRoundState;
+    const {game} = gameState;
 
     useEffect(() => {
         if (currentRoundState.round?.status == RoundStatus.FINISHED) {
@@ -49,6 +50,12 @@ const ExplainContainer: React.FC<Props> = ({
         }
 
     }, [currentRoundState, gameState])
+
+    useEffect(() => {
+        if (game?.status == GameStatus.FINISHED) {
+            navigate("/gameFinished");
+        }
+    }, [gameState])
 
     const handleTimerComplete = () => {
         setRoundActive(false)

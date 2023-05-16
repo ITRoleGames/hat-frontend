@@ -9,6 +9,7 @@ import {RoundStatus} from "../model/round-status";
 import {Explanation} from "../model/explanation.model";
 import {ExplanationApi} from "../api/explanation.api";
 import {UpdateExplanationData} from "../model/update-explanation-data.mode";
+// import {finishGame} from "./game.slice";
 
 const initialState: RoundState = {
     round: undefined,
@@ -116,22 +117,25 @@ export const nextExplanationAction = (
     gameId: string,
     roundId: number,
     updateExplanationData: UpdateExplanationData
-): ThunkAction<Promise<Explanation>, {}, {}, AnyAction> => {
+): ThunkAction<Promise<Explanation | null>, {}, {}, AnyAction> => {
     logInfo("call nextExplanationAction")//todo: remove
-    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<Explanation> => {
-        return new Promise<Explanation>((resolve) => {
+    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<Explanation | null> => {
+        return new Promise<Explanation | null>((resolve) => {
             dispatch(nextExplanationActionPending());
-            logInfo("pending")
-            return ExplanationApi.getNextExplanation(gameId, roundId, updateExplanationData).then((resp: Explanation) => {
-                dispatch(nextExplanationActionSuccess(resp));
-                resolve(resp);
+            return ExplanationApi.getNextExplanation(gameId, roundId, updateExplanationData).then((resp: Explanation | null) => {
+                if(resp == null){
+                    dispatch(finishRoundAction(gameId,roundId))
+                    resolve(null)
+                }else {
+                    dispatch(nextExplanationActionSuccess(resp));
+                    resolve(resp);
+                }
             }).catch((error: AxiosError) => dispatch(nextExplanationActionFailed(error.message)));
         });
     };
 };
 
 export const finishRoundAction = (gameId: string, roundId: number): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-    logInfo("call finishRoundAction") //todo: remove
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
         return new Promise<void>((resolve) => {
             dispatch(finishRoundActionPending());

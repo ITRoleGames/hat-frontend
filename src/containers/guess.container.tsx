@@ -11,6 +11,7 @@ import {getCurrentRoundAction} from "../slice/round.slice";
 import {useEffect, useRef, useState} from "react";
 import {RoundStatus} from "../model/round-status";
 import {calculateRoundTime} from "../utils/time-util";
+import {GameStatus} from "../model/game-status";
 
 const GuessContainer: React.FC<Props> = ({
                                              userState,
@@ -44,6 +45,12 @@ const GuessContainer: React.FC<Props> = ({
 
     }, [currentRoundState, gameState])
 
+    useEffect(() => {
+        if (game?.status == GameStatus.FINISHED) {
+            navigate("/gameFinished");
+        }
+    }, [gameState])
+
     const handleTimerComplete = () => {
         setRoundActive(false)
         getCurrentRound(game!!.id).then(round => {
@@ -51,7 +58,7 @@ const GuessContainer: React.FC<Props> = ({
                 navigate("/gameStarted");
             } else {
                 refTimer.current = window.setTimeout(() => {
-                    getCurrentRound(game!!.id).then(round => {
+                    getCurrentRound(game!!.id).then(_ => {
                         navigate("/gameStarted");
                     });
                 }, 500);

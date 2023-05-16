@@ -5,10 +5,10 @@ import {RootState} from "reducers/combine";
 import {ThunkDispatch} from "redux-thunk";
 import {Action} from "redux";
 import Loading from "../components/common/loading.component";
-import {useNavigate} from "react-router";
 import {getGameReportAction} from "../slice/game-report.slice";
 import GameResults from "../components/common/game-results.component";
 import {useEffect} from "react";
+import {getGameAction} from "../slice/game.slice";
 
 const GameFinishedContainer: React.FC<Props> = ({
                                                     userState,
@@ -16,18 +16,19 @@ const GameFinishedContainer: React.FC<Props> = ({
                                                     gameUsersState,
                                                     gameReportState,
                                                     getGameReport,
+                                                    getGame
                                                 }) => {
 
     const {t} = useTranslation();
-    const navigate = useNavigate();
 
     const {user} = userState;
     const {game, loading: gameLoading} = gameState;
-    const {users, loading: usersLoading} = gameUsersState;
+    const {users} = gameUsersState;
     const {gameReport} = gameReportState;
 
     useEffect(() => {
         if (game) {
+            getGame(game.id)
             getGameReport(game.id)
             return;
         }
@@ -57,7 +58,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, Action>) => ({
-    getGameReport: async (gameId: string) => await dispatch(getGameReportAction(gameId))
+    getGameReport: async (gameId: string) => await dispatch(getGameReportAction(gameId)),
+    getGame: async (gameId: string) => await dispatch(getGameAction(gameId))
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

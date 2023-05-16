@@ -144,7 +144,7 @@ export const {
     joinGameActionFailed,
     startGameActionPending,
     startGameActionSuccess,
-    startGameActionFailed
+    startGameActionFailed,
 
 } = gameSlice.actions
 

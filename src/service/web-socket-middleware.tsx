@@ -35,7 +35,7 @@ import {
     getLatestRoundActionPending,
     getLatestRoundActionSuccess
 } from "../slice/round.slice";
-import {logError, logInfo} from "../utils/logging.utils";
+import {logInfo} from "../utils/logging.utils";
 import {getGameActionFailed, getGameActionPending, getGameActionSuccess} from "../slice/game.slice";
 
 const webSocketMiddleware: Middleware = store => {
@@ -107,7 +107,7 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
         if (gameEvent.type == "GAME_UPDATED" && gameEvent.actorUserId != userId) {
 
             const gameState = store.getState().game;
-            if(gameState.game.status == GameStatus.STARTED){
+            if (gameState.game.status == GameStatus.STARTED) {
                 store.dispatch(getLatestRoundActionPending());
                 RoundApi.getLatestRound(gameState.game.id).then((resp: Round | undefined) => {
                     if (resp) {
@@ -116,7 +116,7 @@ const connect = (gameId: string, userId: string, store: MiddlewareAPI) => {
                         store.dispatch(getLatestRoundActionFailed("not found"));
                     }
                 }).catch((error: AxiosError) => store.dispatch(getLatestRoundActionFailed(error.message)));
-            }else {
+            } else {
                 store.dispatch(getGameActionPending());
                 GameApi.getGame(gameId).then((game: Game) => {
                     store.dispatch(getGameActionSuccess(game));

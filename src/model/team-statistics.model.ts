@@ -1,7 +1,5 @@
-import {PlayerRef} from "./player-ref.model";
-
 export interface TeamStatistics {
-    players: PlayerRef[];
+    players: number[];
     wordsGuessed: number;
     roundsCount: number;
 }

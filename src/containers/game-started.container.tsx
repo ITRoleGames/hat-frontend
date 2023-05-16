@@ -12,6 +12,7 @@ import {getCurrentRoundAction, startRoundAction} from "../slice/round.slice";
 import {useNavigate} from "react-router";
 import {RoundStatus} from "../model/round-status";
 import {getGameReportAction} from "../slice/game-report.slice";
+import {GameStatus} from "../model/game-status";
 
 const GameStartedContainer: React.FC<Props> = ({
                                                    userState,
@@ -30,7 +31,7 @@ const GameStartedContainer: React.FC<Props> = ({
     const {round: currentRound, loading: currentRoundLoading, error: currentRoundError} = currentRoundState;
     const {user} = userState;
     const {game, loading: gameLoading} = gameState;
-    const {users, loading: usersLoading} = gameUsersState;
+    const {users} = gameUsersState;
     const {gameReport} = gameReportState;
 
     useEffect(() => {
@@ -79,6 +80,12 @@ const GameStartedContainer: React.FC<Props> = ({
             return;
         }
     }, [currentRoundState])
+
+    useEffect(() => {
+        if (gameReport?.gameStatus == GameStatus.FINISHED || game?.status == GameStatus.FINISHED) {
+            navigate("/gameFinished");
+        }
+    }, [gameState, gameReportState])
 
 
     const handleStartRound = (gameId: string) => {

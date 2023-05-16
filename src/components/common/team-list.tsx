@@ -8,7 +8,6 @@ import {TeamPanelProps} from "../../dto/team-panel-props";
 import {Round} from "../../model/round.model";
 import {RoundStatus} from "../../model/round-status";
 import {GameReport} from "../../model/game-report.model";
-import {PlayerRef} from "../../model/player-ref.model";
 import {TeamStatistics} from "../../model/team-statistics.model";
 import {groupBy} from "../../service/group.utils";
 import {enrichPlayersWithNames} from "../../service/player.utils";
@@ -58,7 +57,7 @@ function TeamList({game, currentRound, currentUser, gameUsers, gameReport, start
         }
 
         const teamStats = gameReport?.teamStats?.find((ts: TeamStatistics) =>
-            ts.players.findIndex((playerRef: PlayerRef) => playerRef.internalId == players[0].id) != -1
+            ts.players.findIndex((playerInternalId: number) => playerInternalId == players[0].id) != -1
         );
 
         return {

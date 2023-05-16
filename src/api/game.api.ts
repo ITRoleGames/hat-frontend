@@ -3,7 +3,6 @@ import {CreateGameData} from "model/create-game-data.model";
 import {Game} from "model/game.model";
 import {UrlUtils} from "utils/url-utils";
 import {GameReport} from "../model/game-report.model";
-import {PlayerRef} from "../model/player-ref.model";
 
 export class GameApi {
 
@@ -39,33 +38,8 @@ export class GameApi {
 
     static getGameReport = async (id: string): Promise<GameReport> => {
 
-        // const response = await axios.post(`${ UrlUtils.API_V1 }/games/${id}/report`);
-        // return response.data;
-
-        return Promise.resolve(
-            {
-                wordsGuessed: 1,
-                totalTime: 5240,
-                teamStats: [
-                    {
-                        players: [{internalId: 57} as PlayerRef],
-                        wordsGuessed: 4,
-                        roundsCount: 22
-                    },
-
-                    {
-                        players: [{internalId: 60} as PlayerRef],
-                        wordsGuessed: 2,
-                        roundsCount: 22
-                    },
-                    {
-                        players: [{internalId: 61} as PlayerRef],
-                        wordsGuessed: 3,
-                        roundsCount: 22
-                    }
-                ]
-            } as GameReport
-        )
+        const response = await axios.get(`${ UrlUtils.API_V1 }/games/${id}/report`);
+        return response.data;
     }
 
 }

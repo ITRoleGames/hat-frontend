@@ -2,7 +2,6 @@ import {Game} from "../../model/game.model";
 import {User} from "../../model/user.model";
 import {PlayerWithName} from "../../dto/player-with-name";
 import {GameReport} from "../../model/game-report.model";
-import {PlayerRef} from "../../model/player-ref.model";
 import {TeamStatistics} from "../../model/team-statistics.model";
 import {groupBy} from "../../service/group.utils";
 import {enrichPlayersWithNames} from "../../service/player.utils";
@@ -32,7 +31,7 @@ function TeamResultsList({game, currentUser, gameUsers, gameReport}: Props) {
         const isCurrentUsersTeam = players.findIndex((player) => player.userId == currentUser.id) != -1;
 
         const teamStats = gameReport.teamStats.find((ts: TeamStatistics) =>
-            ts.players.findIndex((playerRef: PlayerRef) => playerRef.internalId == players[0].id) != -1
+            ts.players.findIndex((playerInternalId: number) => playerInternalId == players[0].id) != -1
         );
 
         const sortedGuessedWords = gameReport.teamStats?.map(ts => ts.wordsGuessed).sort().reverse();
